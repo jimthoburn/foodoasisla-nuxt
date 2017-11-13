@@ -1,0 +1,61 @@
+module.exports = {
+  /*
+  ** Headers of the page
+  */
+  head: {
+    title: 'Food Oasis Los Angeles',
+    meta: [
+      { charset: 'utf-8' },
+      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      // { hid: 'description', name: 'description', content: 'Nuxt.js project' }
+
+      // for Windows 8
+      { name: 'msapplication-TileImage', content: '/assets/images/favicon.png' },
+      { name: 'msapplication-TileColor', content: 'rgb(240, 240, 240)' }
+    ],
+    link: [
+      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Reem+Kufi|Open+Sans:400,400i,600' },
+      { rel: 'stylesheet', href: 'https://api.tiles.mapbox.com/mapbox-gl-js/v0.33.1/mapbox-gl.css' },
+      { rel: 'stylesheet', href: '/assets/css/elements.css' },
+      { rel: 'stylesheet', href: '/assets/css/buttons.css' },
+      { rel: 'stylesheet', href: '/assets/css/form.css' },
+      { rel: 'stylesheet', href: '/assets/css/header.css' },
+      { rel: 'stylesheet', href: '/assets/css/footer.css' },
+      { rel: 'stylesheet', href: '/assets/css/nav.css' },
+      { rel: 'stylesheet', href: '/assets/css/map.css' },
+      { rel: 'stylesheet', href: '/assets/css/location-list.css' },
+      { rel: 'stylesheet', href: '/assets/css/location-details.css' },
+      { rel: 'stylesheet', href: '/assets/css/audience.css' },
+      { rel: 'stylesheet', href: '/assets/css/organizations.css' },
+      { rel: 'stylesheet', href: '/assets/css/home.css' },
+
+      // for general use
+      { rel: 'icon', type: 'image/png', href: '/assets/images/favicon.png' },
+
+      // for iOS
+      { rel: 'apple-touch-icon', href: '/assets/images/favicon-rgb-240-240-240.png' }
+    ]
+  },
+  /*
+  ** Customize the progress bar color
+  */
+  loading: { color: '#3B8070' },
+  /*
+  ** Build configuration
+  */
+  build: {
+    /*
+    ** Run ESLint on save
+    */
+    extend (config, ctx) {
+      if (ctx.dev && ctx.isClient) {
+        config.module.rules.push({
+          enforce: 'pre',
+          test: /\.(js|vue)$/,
+          loader: 'eslint-loader',
+          exclude: /(node_modules)/
+        })
+      }
+    }
+  }
+}
