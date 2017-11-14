@@ -5,22 +5,32 @@ const LOS_ANGELES = {
   longitude: -118.243685
 }
 
-function findUserLocation ({route, locations}) {
+function findUserLocation ({process, route, locations}) {
   return new Promise(function (resolve, reject) {
-    // let address = route.query['address']
+    let address = route.query['address']
     let location = getLocationFromPageURI({route, locations})
 
     // If the user passed in an address, and if the Google Maps geocoder is available
-    // if (address && 'google' in window) {
-    //   // getCoordinatesFromAddress({address, callback})
-    //   resolve({
-    //     latitude: location.latitude,
-    //     longitude: location.longitude,
-    //     name: location.name
-    //   })
+    if (address && process.browser && window && 'google' in window) {
+      getCoordinatesFromAddress({address, route})
+        .then(function (location) {
+          resolve({
+            latitude: location.latitude,
+            longitude: location.longitude,
+            name: location.name
+          })
+        })
+        .catch(function (error) {
+          if (console && console.error) console.error(error)
+          resolve({
+            latitude: LOS_ANGELES.latitude,
+            longitude: LOS_ANGELES.longitude,
+            label: 'Downtown Los Angeles'
+          })
+        })
 
     // If we’re on a location detail page, use that location’s coordinates as the user’s location
-    if (location) {
+    } else if (location) {
       resolve({
         latitude: location.latitude,
         longitude: location.longitude,
@@ -41,39 +51,31 @@ function findUserLocation ({route, locations}) {
   })
 }
 
-/*
-function getCoordinatesFromAddress ({address, callback}) {
-  // Add Los Angeles to the address
-  if (address.indexOf('Los Angeles') < 0) {
-    address += ' Los Angeles'
-  }
-
-  let geocoder = new google.maps.Geocoder()
-
-  geocoder.geocode({'address': address}, function (results, status) {
-    if (status === google.maps.GeocoderStatus.OK) {
-      let latitude = results[0].geometry.location.lat()
-      let longitude = results[0].geometry.location.lng()
-
-      setLastUserLocation({
-        latitude: latitude,
-        longitude: longitude,
-        name: window.oasis.getParameterByName('address'),
-        wasFound: true
-      })
-      if (callback) callback(getLastUserLocation())
-    } else {
-      console.error('Geocode was not successful for the following reason: ' + status)
-      setLastUserLocation({
-        latitude: LOS_ANGELES.latitude,
-        longitude: LOS_ANGELES.longitude,
-        label: 'Downtown Los Angeles'
-      })
-      if (callback) callback(getLastUserLocation())
+function getCoordinatesFromAddress ({address, route}) {
+  return new Promise(function (resolve, reject) {
+    // Add Los Angeles to the address
+    if (address.indexOf('Los Angeles') < 0) {
+      address += ' Los Angeles'
     }
+
+    let geocoder = new window.google.maps.Geocoder()
+
+    geocoder.geocode({'address': address}, function (results, status) {
+      if (status === window.google.maps.GeocoderStatus.OK) {
+        let latitude = results[0].geometry.location.lat()
+        let longitude = results[0].geometry.location.lng()
+
+        resolve({
+          latitude: latitude,
+          longitude: longitude,
+          name: route.query['address']
+        })
+      } else {
+        reject(new Error('Geocode was not successful for the following reason: ' + status))
+      }
+    })
   })
 }
-*/
 
 /*
 function getCoordinatesFromDevice (callback) {

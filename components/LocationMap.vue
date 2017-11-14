@@ -6,103 +6,9 @@
 </template>
 
 <script>
-window.oasis = window.oasis || {}
+import mapOptions from '~/util/mapOptions.js'
 
-// Define the icons
-window.oasis.MARKER_OPTIONS = {
-  'Community Garden': {
-    // Specify a class name we can refer to in CSS.
-    className: 'community-garden-marker',
-    // Set marker width and height
-    iconSize: [30, 46],
-    iconAnchor: [15, 40],
-    popupAnchor: [0, -23]
-  },
-  'Farmers Market': {
-    // Specify a class name we can refer to in CSS.
-    className: 'farmers-market-marker',
-    // Set marker width and height
-    iconSize: [30, 46],
-    iconAnchor: [15, 40],
-    popupAnchor: [0, -23]
-  },
-  'Food Pantry': {
-    // Specify a class name we can refer to in CSS.
-    className: 'food-pantry-marker',
-    // Set marker width and height
-    iconSize: [30, 46],
-    iconAnchor: [15, 40],
-    popupAnchor: [0, -23]
-  },
-  'Orchard': {
-    // Specify a class name we can refer to in CSS.
-    className: 'orchard-marker',
-    // Set marker width and height
-    iconSize: [30, 46],
-    iconAnchor: [15, 40],
-    popupAnchor: [0, -23]
-  },
-  'Pop Up Market': {
-    // Specify a class name we can refer to in CSS.
-    className: 'pop-up-market-marker',
-    // Set marker width and height
-    iconSize: [30, 46],
-    iconAnchor: [15, 40],
-    popupAnchor: [0, -23]
-  },
-  'Restaurant': {
-    // Specify a class name we can refer to in CSS.
-    className: 'restaurant-marker',
-    // Set marker width and height
-    iconSize: [30, 46],
-    iconAnchor: [15, 40],
-    popupAnchor: [0, -23]
-  },
-  'Summer Lunch': {
-    // Specify a class name we can refer to in CSS.
-    className: 'summer-lunch-marker',
-    // Set marker width and height
-    iconSize: [30, 46],
-    iconAnchor: [15, 40],
-    popupAnchor: [0, -23]
-  },
-  'Supermarket': {
-    // Specify a class name we can refer to in CSS.
-    className: 'farmers-market-marker',
-    // Set marker width and height
-    iconSize: [30, 46],
-    iconAnchor: [15, 40],
-    popupAnchor: [0, -23]
-  },
-  'Cultivate LA': {
-    // Specify a class name we can refer to in CSS.
-    className: 'cultivate-la-marker',
-    // Set marker width and height
-    iconSize: [30, 46],
-    iconAnchor: [15, 40],
-    popupAnchor: [0, -23]
-  }
-}
-
-window.oasis.FOOD_DESERTS_SOURCE = {
-  'type': 'vector',
-  'url': 'mapbox://foodoasisla.d040onrj'
-}
-
-window.oasis.FOOD_DESERTS_LAYER = {
-  'id': 'Food Deserts',
-  'type': 'fill',
-  'source': 'Food Deserts',
-  'layout': {
-    'visibility': 'visible'
-  },
-  'paint': {
-    'fill-color': '#FF0000',
-    'fill-opacity': 0.1
-  },
-  'filter': ['==', 'LI LA De_4', '1'],
-  'source-layer': 'USDA_Food_Desert_Tracts_2010-65gavx'
-}
+let oasisMap
 
 export default {
   props: {
@@ -131,7 +37,7 @@ export default {
             lat: this.selectedLocation.latitude
           }
 
-          window.oasis.map.setCenter(coordinates)
+          oasisMap.setCenter(coordinates)
         }
       }
     }.bind(this), 1)
@@ -143,15 +49,7 @@ export default {
       skipNextMoveMap: false, // SHIM: Avoid moving the map when clicking on markers
       markers: [],
       currentMarker: null,
-      initializingMarkers: true,
-
-      MAP_STYLE: 'mapbox://styles/mapbox/basic-v9',
-
-      // Los Angeles County boundaries
-      MAP_BOUNDS: [
-        [-119.9442369, 32.7089729], // Southwest coordinates
-        [-116.63282912, 35.8275538] // Northeast coordinates
-      ]
+      initializingMarkers: true
     }
   },
   watch: {
@@ -168,14 +66,14 @@ export default {
         this.resetCurrentMarker()
       } else {
         this.updateCurrentMarker(this.selectedLocation)
-        if (!this.skipNextMoveMap) window.oasis.map.flyTo({ center: [this.selectedLocation.longitude, this.selectedLocation.latitude] })
+        if (!this.skipNextMoveMap) oasisMap.flyTo({ center: [this.selectedLocation.longitude, this.selectedLocation.latitude] })
         this.skipNextMoveMap = false
       }
     }
   },
   methods: {
     mapBoxSupported () {
-      return window && 'mapboxgl' in window && window.mapboxgl.supported()
+      return true // if (process.browser) return window && 'mapboxgl' in window && window.mapboxgl.supported()
     },
     showSearchThisArea () {
       document.body.classList.add('has-search-this-area')
@@ -188,41 +86,41 @@ export default {
       this.hideSearchThisArea()
       this.resetCurrentMarker()
 
-      let center = window.oasis.map.getCenter().toArray()
+      let center = oasisMap.getCenter().toArray()
       this.$emit('search-this-area', { latitude: center[1], longitude: center[0] })
     },
     createMap () {
-      if (document.getElementById('map') && this.mapBoxSupported()) {
+      if (process.browser && document.getElementById('map') && this.mapBoxSupported()) {
         window.mapboxgl.accessToken = this.token
 
-        window.oasis.map = new window.mapboxgl.Map({
+        oasisMap = new window.mapboxgl.Map({
           container: document.getElementById('map'),
-          style: this.MAP_STYLE,
-          maxBounds: this.MAP_BOUNDS
+          style: mapOptions.MAP_STYLE,
+          maxBounds: mapOptions.MAP_BOUNDS
         })
 
-        window.oasis.map.on('load', function () {
+        oasisMap.on('load', function () {
           // Add a zoom control
-          window.oasis.map.addControl(new window.mapboxgl.NavigationControl({ position: 'top-right' })) // position is optional
+          oasisMap.addControl(new window.mapboxgl.NavigationControl({ position: 'top-right' })) // position is optional
 
           // Draw food desert census tracts
-          if (window.oasis.getParameterByName('deserts') === '1') {
-            window.oasis.map.addSource('Food Deserts', window.oasis.FOOD_DESERTS_SOURCE)
-            window.oasis.map.addLayer(window.oasis.FOOD_DESERTS_LAYER)
+          if (this.$route.query['deserts'] === '1') {
+            oasisMap.addSource('Food Deserts', mapOptions.FOOD_DESERTS_SOURCE)
+            oasisMap.addLayer(mapOptions.FOOD_DESERTS_LAYER)
           }
-          // window.oasis.map.resize()
-        })
+          // oasisMap.resize()
+        }.bind(this))
 
-        window.oasis.map.on('dragstart', function () {
+        oasisMap.on('dragstart', function () {
           this.dragging = true
         }.bind(this))
-        window.oasis.map.on('dragend', function () {
+        oasisMap.on('dragend', function () {
           setTimeout(function () {
             this.dragging = false
           }.bind(this), 10)
         }.bind(this))
 
-        window.oasis.map.on('dragend', this.showSearchThisArea.bind(this))
+        oasisMap.on('dragend', this.showSearchThisArea.bind(this))
       }
     },
     updateMarkers: function () {
@@ -231,14 +129,14 @@ export default {
       this.addMarkers(this.locations)
     },
     addYouAreHere: function (coordinates) {
-      let template = document.getElementById('you-are-here-template')
+      let template = '<div class="you-are-here"><span>You are here</span></div>'
 
       let marker = document.createElement('div')
       marker.innerHTML = template.innerHTML
 
       return new window.mapboxgl.Marker(marker)
         .setLngLat(coordinates)
-        .addTo(window.oasis.map)
+        .addTo(oasisMap)
     },
     createMarker: function (options, data) {
       let marker = document.createElement('div')
@@ -250,7 +148,7 @@ export default {
       return marker
     },
     updateMarkerLabels: function () {
-      if (window.oasis.map.getZoom() > 14) { // Zoomed In
+      if (oasisMap.getZoom() > 14) { // Zoomed In
         document.body.classList.remove('hidden-marker-labels')
       } else { // Zoomed Out
         document.body.classList.add('hidden-marker-labels')
@@ -283,7 +181,7 @@ export default {
         location.latitude
       ]
 
-      let options = window.oasis.MARKER_OPTIONS[location.category]
+      let options = mapOptions.MARKER_OPTIONS[location.category]
 
       if (!options) {
         options = {
@@ -302,7 +200,7 @@ export default {
 
       new window.mapboxgl.Marker(marker)
         .setLngLat(coordinates)
-        .addTo(window.oasis.map)
+        .addTo(oasisMap)
 
       let handleMapClick = function (e) {
         if (this.dragging) return
@@ -324,7 +222,7 @@ export default {
       }
     },
     addMarkers: function (locations) {
-      if (!window.oasis.map) return
+      if (!oasisMap) return
 
       document.body.classList.add('hidden-marker-labels')
 
@@ -352,14 +250,14 @@ export default {
 
       // Show the marker labels
       setTimeout(updateMarkerLabels, 1000)
-      if (this.initializingMarkers) window.oasis.map.on('zoomend', updateMarkerLabels)
+      if (this.initializingMarkers) oasisMap.on('zoomend', updateMarkerLabels)
 
       this.initializingMarkers = false
 
       // console.dir(this.markers);
     },
     fitMarkers: function (bounds) {
-      window.oasis.map.setZoom(15)
+      oasisMap.setZoom(15)
 
       let mapLngLatBounds = new window.mapboxgl.LngLatBounds()
 
@@ -368,9 +266,8 @@ export default {
         mapLngLatBounds.extend(bounds[index])
       }
 
-      window.oasis.map.fitBounds(mapLngLatBounds, { padding: 10, easing: function () { return 1 } })
+      oasisMap.fitBounds(mapLngLatBounds, { padding: 10, easing: function () { return 1 } })
     }
   }
 }
 </script>
-

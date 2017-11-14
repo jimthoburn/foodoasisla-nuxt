@@ -34,6 +34,12 @@ module.exports = {
 
       // for iOS
       { rel: 'apple-touch-icon', href: '/assets/images/favicon-rgb-240-240-240.png' }
+    ],
+    script: [
+      { src: 'https://api.mapbox.com/mapbox-gl-js/v0.33.1/mapbox-gl.js' },
+
+      // Jim’s Google Maps API key
+      { src: 'https://maps.googleapis.com/maps/api/js?key=AIzaSyBP5KxqO9v1sLhXlkrG3vDiDdOJvYLJ0H4' }
     ]
   },
   /*

@@ -41,14 +41,14 @@
     </header>
 
     <!-- FOLA’s Mapbox API key (token) -->
-<!--     <location-map
+    <location-map
       v-bind:locations="locations"
       v-bind:selected-location="selectedLocation"
       v-bind:you-are-here="youAreHere"
       v-on:selected="onLocationSelected"
       v-on:search-this-area="onSearchThisArea"
       token="pk.eyJ1IjoiZm9vZG9hc2lzbGEiLCJhIjoiY2l0ZjdudnN4MDhpYzJvbXlpb3IyOHg2OSJ9.POBdqXF5EIsGwfEzCm8Y3Q">
-    </location-map> -->
+    </location-map>
 
     <location-details
       v-if="selectedLocation"
@@ -76,9 +76,7 @@
 </template>
 
 <script>
-/*
 import LocationMap from '~/components/LocationMap.vue'
-*/
 import LocationList from '~/components/LocationList.vue'
 import LocationListNav from '~/components/LocationListNav.vue'
 import LocationDetails from '~/components/LocationDetails.vue'
@@ -169,13 +167,12 @@ if (process.browser) {
 export default {
   name: 'foodoasis-la',
   components: {
-    // LocationMap, LocationList, LocationListNav, LocationDetails
-    LocationList, LocationListNav, LocationDetails
+    LocationMap, LocationList, LocationListNav, LocationDetails
   },
   data: function () {
   },
   asyncData: function ({ route }, callback) {
-    findUserLocation({route, locations})
+    findUserLocation({process, route, locations})
       .then(function (youAreHere) {
         let sortedLocations = getSortedLimitedLocations({route, youAreHere})
 
@@ -196,7 +193,7 @@ export default {
   // },
   computed: {
     mapBoxSupported () {
-      // return window && 'mapboxgl' in window && window.mapboxgl.supported()
+      return true // if (process.browser) return window && 'mapboxgl' in window && window.mapboxgl.supported()
     }
   },
   created: function () {
@@ -278,4 +275,3 @@ export default {
   }
 }
 </script>
-
