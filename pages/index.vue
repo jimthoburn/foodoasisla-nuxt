@@ -50,11 +50,11 @@
       token="pk.eyJ1IjoiZm9vZG9hc2lzbGEiLCJhIjoiY2l0ZjdudnN4MDhpYzJvbXlpb3IyOHg2OSJ9.POBdqXF5EIsGwfEzCm8Y3Q">
     </location-map> -->
 
-<!--     <location-details
+    <location-details
       v-if="selectedLocation"
       v-bind:location="selectedLocation"
       id="map-location-summary">
-    </location-details> -->
+    </location-details>
 
     <main>
       <h2><a href="#list-results" id="list-results-title">List Results</a></h2>

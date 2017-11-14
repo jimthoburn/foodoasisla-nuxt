@@ -3,7 +3,7 @@
     <a v-on:click="showLocationDetails" v-bind:href="locationURI" class="location-summary">
       <img v-bind:src="'/assets/images/home/' + location.categoryCode + '.svg'" width="100" alt="" />
       <h2>{{ location.name }}</h2>
-      <p class="address">{{ location.address_1 }}<br />{{ location.address_2 }}</p>
+      <p class="address">{{ location.address_1 }}<span v-if="location.address_2"><br />{{ location.address_2 }}</span></p>
       <p class="type">{{ location.category }}</p>
       <p v-if="isOpenNow" class="open">Open Now</p>
       <p v-if="distance" class="distance"><span>{{ distance }}</span> <abbr title="miles">mi</abbr></p>
@@ -42,7 +42,7 @@ export default {
     },
     isOpenNow: function () {
       for (let index = 0; index < this.location.hours.length; index++) {
-        if (isOpenOnDayTime({...this.location.hours[index]})) {
+        if (isOpenOnDayTime(this.location.hours[index])) {
           return true
         }
       }

@@ -93,6 +93,9 @@
 </template>
 
 <script>
+import isOpenOnDayTime from '~/util/isOpenOnDayTime.js'
+import getDistanceForPresentation from '~/util/getDistanceForPresentation.js'
+
 export default {
   props: {
     location: {
@@ -129,7 +132,7 @@ export default {
     },
 
     isOpenNowOnWeekday: function (weekdayHours) {
-      return window.oasis.isOpenNow(weekdayHours)
+      return isOpenOnDayTime(weekdayHours)
     },
 
     getFormattedHours: function (hours) {
@@ -151,7 +154,7 @@ export default {
   },
   computed: {
     distance: function () {
-      return window.oasis.getDistanceForPresentation(this.location.distanceFromYou)
+      return getDistanceForPresentation(this.location.distanceFromYou)
     },
     confirmationNote: function () {
       // Add a message encouraging the visitor to call ahead before visiting a location.
@@ -219,7 +222,7 @@ export default {
     },
     isOpenNow: function () {
       for (let index = 0; index < this.location.hours.length; index++) {
-        if (window.oasis.isOpenNow(this.location.hours[index])) {
+        if (isOpenOnDayTime(this.location.hours[index])) {
           return true
         }
       }
