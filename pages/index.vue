@@ -82,7 +82,7 @@ import LocationListNav from '~/components/LocationListNav.vue'
 import LocationDetails from '~/components/LocationDetails.vue'
 
 import sortByClosest from '~/util/sortByClosest.js'
-import findUserLocation from '~/util/findUserLocation.js'
+// import findUserLocation from '~/util/findUserLocation.js'
 // import getLocationFromPageURI from '~/util/getLocationFromPageURI.js'
 
 import locations from '~/data/locations.js'
@@ -165,19 +165,47 @@ if (process.browser) {
 */
 
 export default {
-  name: 'foodoasis-la',
   components: {
     LocationMap, LocationList, LocationListNav, LocationDetails
   },
   data: function () {
   },
-  asyncData: function ({ route }, callback) {
-    findUserLocation({process, route, locations})
-      .then(function (youAreHere) {
+  asyncData: function ({route, app}, callback) {
+    // FOLA’s Mapbox Access Token
+    const MAP_ACCESS_TOKEN = 'pk.eyJ1IjoiZm9vZG9hc2lzbGEiLCJhIjoiY2l0ZjdudnN4MDhpYzJvbXlpb3IyOHg2OSJ9.POBdqXF5EIsGwfEzCm8Y3Q'
+    const MAPBOX_URL = 'https://api.mapbox.com/geocoding/v5/mapbox.places/'
+
+    let address = route.query['address']
+    let addressForGeocoding = address
+    if (address.indexOf('Los Angeles') < 0) {
+      addressForGeocoding += ' Los Angeles'
+    }
+
+    const LOS_ANGELES = {
+      latitude: 34.052234,
+      longitude: -118.243685
+    }
+
+    // Los Angeles County boundaries
+    const MAP_BOUNDS = [
+      [-119.9442369, 32.7089729], // Southwest coordinates
+      [-116.63282912, 35.8275538] // Northeast coordinates
+    ]
+    let bbox = `${MAP_BOUNDS[0][0]},${MAP_BOUNDS[0][1]},${MAP_BOUNDS[1][0]},${MAP_BOUNDS[1][1]}`
+
+    // https://www.mapbox.com/api-documentation/#request-format
+    let url = MAPBOX_URL + encodeURIComponent(addressForGeocoding) + '.json?limit=1&bbox=' + bbox + '&access_token=' + MAP_ACCESS_TOKEN
+
+    // const response = await app.$axios.$get(url)
+
+    app.$axios.$get(url)
+      .then(function (response) {
+        let youAreHere = {
+          latitude: response.features[0].center[1],
+          longitude: response.features[0].center[0],
+          name: address
+        }
         let sortedLocations = getSortedLimitedLocations({route, youAreHere})
-
-        // let selectedLocation = getLocationFromPageURI({route, sortedLocations})
-
         callback(null, {
           locations: sortedLocations,
           youAreHere: youAreHere,
@@ -186,6 +214,37 @@ export default {
           selectedLocation: null // selectedLocation
         })
       })
+      .catch(function (error) {
+        console.error(error)
+        let youAreHere = {
+          latitude: LOS_ANGELES.latitude,
+          longitude: LOS_ANGELES.longitude,
+          name: 'Downtown Los Angeles'
+        }
+        let sortedLocations = getSortedLimitedLocations({route, youAreHere})
+        callback(null, {
+          locations: sortedLocations,
+          youAreHere: youAreHere,
+          searchThisArea: youAreHere,
+          searchAreaName: youAreHere.name,
+          selectedLocation: null // selectedLocation
+        })
+      })
+
+    // findUserLocation({app, route, locations})
+    //   .then(function (youAreHere) {
+    //     let sortedLocations = getSortedLimitedLocations({route, youAreHere})
+
+    //     // let selectedLocation = getLocationFromPageURI({route, sortedLocations})
+
+    //     callback(null, {
+    //       locations: sortedLocations,
+    //       youAreHere: youAreHere,
+    //       searchThisArea: youAreHere,
+    //       searchAreaName: youAreHere.name,
+    //       selectedLocation: null // selectedLocation
+    //     })
+    //   })
   },
   // async asyncData () {
   //   let locations = await locationsPromise
@@ -197,6 +256,17 @@ export default {
     }
   },
   created: function () {
+    // findUserLocation({process, route: this.$route, locations})
+    //   .then(function (youAreHere) {
+    //     let sortedLocations = getSortedLimitedLocations({route: this.$route, youAreHere})
+
+    //     // let selectedLocation = getLocationFromPageURI({route, sortedLocations})
+
+    //     this.locations = sortedLocations
+    //     this.youAreHere = youAreHere
+    //     this.searchThisArea = youAreHere
+    //     this.searchAreaName = youAreHere.name
+    //   }.bind(this))
     // if (console && console.dir) console.dir(this.$root)
 
     // window.addEventListener('popstate', this.onPopState.bind(this))

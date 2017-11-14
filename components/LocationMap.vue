@@ -132,7 +132,7 @@ export default {
       let template = '<div class="you-are-here"><span>You are here</span></div>'
 
       let marker = document.createElement('div')
-      marker.innerHTML = template.innerHTML
+      marker.innerHTML = template
 
       return new window.mapboxgl.Marker(marker)
         .setLngLat(coordinates)
