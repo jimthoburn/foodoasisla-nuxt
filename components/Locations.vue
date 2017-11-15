@@ -11,12 +11,12 @@
       <div class="primary-nav">
 
         <h2>
-          <a href="/"><img src="/assets/images/fola.svg" width="100" alt="Food Oasis Los Angeles" /></a>
+          <a href="https://foodoasis.la/"><img src="/assets/images/fola.svg" width="100" alt="Food Oasis Los Angeles" /></a>
         </h2>
         <p class="tagline">Healthy Food for All Angelenos</p>
 
         <p class="nav-link">
-          <a href="/#navigation">
+          <a href="https://foodoasis.la/#navigation">
             <svg width="22" height="19" viewBox="0 0 22 19">
             <switch>
               <g>

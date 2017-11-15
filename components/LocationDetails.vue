@@ -76,7 +76,7 @@
       <div class="content" v-html="location.content"></div>
 
       <section class="note">
-        <h2>This location’s address and hours may have changed.</h2> 
+        <h2>The information on this page may have changed.</h2> 
         <p>{{ confirmationNote }}</p>
       </section>
 
