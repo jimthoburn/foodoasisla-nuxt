@@ -2,7 +2,7 @@
   <div
     class="location-list"
     v-bind:class="{
-      'has-map-location-summary': selectedLocation,
+      'has-map-location-summary': yourSelectedLocation,
       'has-active-map': mapBoxSupported
     }">
 
@@ -41,8 +41,8 @@
 
     <!-- FOLA’s Mapbox API key (token) -->
     <location-map
-      v-bind:locations="locations"
-      v-bind:selected-location="selectedLocation"
+      v-bind:locations="searchAreaLocations"
+      v-bind:selected-location="yourSelectedLocation"
       v-bind:you-are-here="youAreHere"
       v-on:selected="onLocationSelected"
       v-on:search-this-area="onSearchThisArea"
@@ -50,18 +50,16 @@
     </location-map>
 
     <location-details
-      v-if="selectedLocation"
-      v-bind:location="selectedLocation"
-      id="map-location-summary">
+      v-if="yourSelectedLocation"
+      v-bind:location="yourSelectedLocation">
     </location-details>
 
     <main>
       <h2><a href="#list-results" id="list-results-title">List Results</a></h2>
 
       <location-list
-        v-bind:locations="locations"
-        v-on:selected="onLocationSelected"
-        id="list-results">
+        v-bind:locations="searchAreaLocations"
+        v-on:selected="onLocationSelected">
       </location-list>
 
       <!--
@@ -94,16 +92,26 @@ export default {
       type: Object,
       required: true
     },
-    searchThisArea: {
-      type: Object,
-      required: true
-    },
-    searchAreaName: {
-      type: String,
-      required: true
-    },
     selectedLocation: {
       type: Object
+    }
+  },
+  data: function () {
+    return {
+      searchThisArea: null,
+      searchAreaName: null,
+      searchAreaLocations: null,
+      yourSelectedLocation: null
+    }
+  },
+  watch: {
+    locations: function (value) {
+      // Save the locations passed to this view
+      this.searchAreaLocations = value
+    },
+    selectedLocation: function (value) {
+      // Save the selected location passed to this view
+      this.yourSelectedLocation = value
     }
   },
   computed: {
@@ -112,6 +120,14 @@ export default {
     }
   },
   created: function () {
+    // Save the location passed to this view
+    this.searchAreaLocations = this.locations
+
+    // Save the selected location passed to this view
+    this.yourSelectedLocation = this.selectedLocation
+
+    this.searchThisArea = this.youAreHere // Start out by searching near you
+    this.searchAreaName = this.searchThisArea.name
     if (process.browser) {
       window.addEventListener('popstate', this.onPopState.bind(this))
     }
@@ -123,7 +139,7 @@ export default {
         longitude: coordinates.longitude
       }
 
-      this.locations = getSortedLimitedLocations({
+      this.searchAreaLocations = getSortedLimitedLocations({
         route: this.$route,
         searchThisArea: this.searchThisArea,
         youAreHere: this.youAreHere
@@ -146,13 +162,14 @@ export default {
     },
     pushState: function (url) {
       let state = {
-        locations: this.locations,
-        selectedLocation: this.selectedLocation
+        locations: this.searchAreaLocations,
+        selectedLocation: this.yourSelectedLocation
       }
 
       url += window.location.search
 
       console.log('pushState: ' + url)
+      console.dir(state)
 
       window.history.pushState(state, null, url)
     },
@@ -161,7 +178,7 @@ export default {
       console.dir(event.state)
 
       if (event.state && event.state.locations) {
-        this.locations = event.state.locations
+        this.searchAreaLocations = event.state.locations
       }
 
       if (event.state && event.state.selectedLocation) { // Back to location details
@@ -172,7 +189,7 @@ export default {
     },
     setSelectedLocation: function (location) {
       console.log('setSelectedLocation: ' + location.name)
-      this.selectedLocation = location
+      this.yourSelectedLocation = location
 
       // Scroll to the top of the page, since the page content has changed.
       if (process.browser) {
@@ -185,7 +202,7 @@ export default {
       }, 1)
     },
     resetSelectedLocation: function () {
-      this.selectedLocation = null
+      this.yourSelectedLocation = null
 
       // Scroll to the top of the page, since the page content has changed.
       if (process.browser) {

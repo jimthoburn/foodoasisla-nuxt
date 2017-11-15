@@ -12,8 +12,6 @@ function getLocationsData ({route, app}, callback) {
       callback(null, {
         locations: sortedLocations,
         youAreHere: youAreHere,
-        searchThisArea: youAreHere,
-        searchAreaName: youAreHere.name,
         selectedLocation: selectedLocation
       })
     })

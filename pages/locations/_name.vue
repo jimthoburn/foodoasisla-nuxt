@@ -2,8 +2,6 @@
   <locations
     v-bind:locations="locations" 
     v-bind:you-are-here="youAreHere"
-    v-bind:search-this-area="searchThisArea"
-    v-bind:search-area-name="searchAreaName"
     v-bind:selected-location="selectedLocation">
   </locations>
 </template>

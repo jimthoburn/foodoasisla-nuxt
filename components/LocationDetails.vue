@@ -12,7 +12,7 @@
       <div class="location-summary">
         <img v-bind:src="'/assets/images/home/' + location.categoryCode + '.svg'" width="100" alt="" />
         <h2>{{ location.name }}</h2>
-              <p class="address">{{ location.address_1 }}<br />{{ location.address_2 }}</p>
+              <p class="address">{{ location.address_1 }}<span v-if="location.address_2"><br />{{ location.address_2 }}</span></p>
               <p class="type">{{ location.category }}</p>
               <p v-if="isOpenNow" class="open">Open Now</p>
               <p class="distance"><span>{{ distance }}</span> <abbr title="miles">mi</abbr></p>
@@ -50,7 +50,7 @@
         <p>{{ location.season_open }} - {{ location.season_close }}</p>
       </section>
 
-      <section class="hours">
+      <section class="hours" v-if="hasHours">
         <h2>Hours</h2>
         <dl>
           <template v-for="item in location.hours">
@@ -227,6 +227,9 @@ export default {
         }
       }
       return false
+    },
+    hasHours: function () {
+      return this.location.hours.length > 0
     }
   }
 }
