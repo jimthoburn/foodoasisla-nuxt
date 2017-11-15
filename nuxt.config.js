@@ -64,6 +64,46 @@ module.exports = {
       }
     }
   },
+  router: {
+    // base: '/app/',
+    extendRoutes (routes, resolve) {
+      routes.push({
+        name: 'locations',
+        path: '/locations/:name',
+        component: resolve(__dirname, 'pages/index.vue')
+      })
+      routes.push({
+        name: 'community-garden',
+        path: '/community-garden/:name',
+        component: resolve(__dirname, 'pages/index.vue')
+      })
+      routes.push({
+        name: 'farmers-market',
+        path: '/farmers-market/:name',
+        component: resolve(__dirname, 'pages/index.vue')
+      })
+      routes.push({
+        name: 'food-pantry',
+        path: '/food-pantry/:name',
+        component: resolve(__dirname, 'pages/index.vue')
+      })
+      routes.push({
+        name: 'summer-lunch',
+        path: '/summer-lunch/:name',
+        component: resolve(__dirname, 'pages/index.vue')
+      })
+      routes.push({
+        name: 'supermarket',
+        path: '/supermarket/:name',
+        component: resolve(__dirname, 'pages/index.vue')
+      })
+      routes.push({
+        name: 'cultivate-la',
+        path: '/cultivate-la/:name',
+        component: resolve(__dirname, 'pages/index.vue')
+      })
+    }
+  },
   modules: [
     '@nuxtjs/axios'
     // 'mapbox'
