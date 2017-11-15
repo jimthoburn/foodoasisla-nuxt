@@ -2,7 +2,8 @@ import getLocationFromPageURI from '~/util/getLocationFromPageURI.js'
 
 const LOS_ANGELES = {
   latitude: 34.052234,
-  longitude: -118.243685
+  longitude: -118.243685,
+  name: 'Downtown Los Angeles'
 }
 
 // Los Angeles County boundaries
@@ -18,40 +19,26 @@ const MAPBOX_URL = 'https://api.mapbox.com/geocoding/v5/mapbox.places/'
 function findUserLocation ({route, app, locations}) {
   return new Promise(function (resolve, reject) {
     let address = route.query['address']
-    let location = getLocationFromPageURI({route, locations})
+    let selectedLocation = getLocationFromPageURI({route, locations})
 
     if (address) {
       getLocationFromAddress({app, address})
-        .then(function (location) {
-          resolve(location)
-        })
+        .then(resolve)
         .catch(function (error) {
           console.error(error)
-          resolve({
-            latitude: LOS_ANGELES.latitude,
-            longitude: LOS_ANGELES.longitude,
-            name: 'Downtown Los Angeles'
-          })
+          resolve(LOS_ANGELES)
         })
 
     // If we’re on a location detail page, use that location’s coordinates as the user’s location
-    } else if (location) {
-      resolve({
-        latitude: location.latitude,
-        longitude: location.longitude,
-        name: location.name
-      })
+    } else if (selectedLocation) {
+      resolve(selectedLocation)
 
     // Else if automatic geolocation is available
     // } else if ("geolocation" in navigator) {
 
       // getCoordinatesFromDevice(callback);
     } else {
-      resolve({
-        latitude: LOS_ANGELES.latitude,
-        longitude: LOS_ANGELES.longitude,
-        name: 'Downtown Los Angeles'
-      })
+      resolve(LOS_ANGELES)
     }
   })
 }

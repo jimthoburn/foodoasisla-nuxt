@@ -1,14 +1,6 @@
 <template>
   <div class="location-summary-container">
     <div v-bind:class="[location.categoryCode, location.parentCategoryCode]">
-      <!--
-      <p class="action" style="text-align: center; font-size: 0.75em; margin-top: -0.375rem; margin-bottom: 0; display: none;">
-        <button type="button">
-          Close
-        </button>
-      </p>
-      -->
-
       <div class="location-summary">
         <img v-bind:src="'/assets/images/home/' + location.categoryCode + '.svg'" width="100" alt="" />
         <h2>{{ location.name }}</h2>

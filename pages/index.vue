@@ -20,8 +20,9 @@ export default {
   asyncData: function ({route, app}, callback) {
     findUserLocation({route, app, locations})
       .then(function (youAreHere) {
-        let sortedLocations = getSortedLimitedLocations({route, youAreHere})
         let selectedLocation = getLocationFromPageURI({route, locations})
+        let searchThisArea = (selectedLocation !== null) ? selectedLocation : youAreHere
+        let sortedLocations = getSortedLimitedLocations({route, youAreHere, searchThisArea})
         callback(null, {
           locations: sortedLocations,
           youAreHere: youAreHere,

@@ -5,12 +5,7 @@ import locations from '~/data/locations.js'
 const listOffset = 0
 const listLimit = 20
 
-function getSortedLimitedLocations ({route, youAreHere, searchThisArea = {}}) {
-  if (!searchThisArea.latitude || !searchThisArea.longitude) {
-    searchThisArea.latitude = youAreHere.latitude
-    searchThisArea.longitude = youAreHere.longitude
-  }
-
+function getSortedLimitedLocations ({route, youAreHere, searchThisArea}) {
   let limitedList = sortByClosest({
     route: route,
     locations: locations,
