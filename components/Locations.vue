@@ -129,9 +129,9 @@ export default {
     this.searchThisArea = this.youAreHere // Start out by searching near you
     this.searchAreaName = this.searchThisArea.name
 
-    // if (process.browser) {
-    //   window.addEventListener('popstate', this.onPopState.bind(this))
-    // }
+    if (process.browser) {
+      window.addEventListener('popstate', this.onPopState.bind(this))
+    }
   },
   methods: {
     onSearchThisArea: function (coordinates) {
@@ -149,45 +149,49 @@ export default {
       // Scroll to the top of the list, since the list content has changed.
       document.querySelector('main').scrollTo(0, 0)
 
-      // if (process.browser) {
-      //   this.pushState()
-      // }
+      if (process.browser) {
+        this.pushState()
+      }
     },
     onBackToList: function (event) {
       this.resetSelectedLocation()
-      // this.pushState('/locations/')
+      if (process.browser) {
+        this.pushState('/locations/')
+      }
     },
     onLocationSelected: function (location) {
       this.setSelectedLocation(location)
-      // this.pushState(location.uri)
+      if (process.browser) {
+        this.pushState(location.uri)
+      }
     },
-    // pushState: function (url) {
-    //   let state = {
-    //     locations: this.searchAreaLocations,
-    //     selectedLocation: this.yourSelectedLocation
-    //   }
+    pushState: function (url) {
+      let state = {
+        locations: this.searchAreaLocations,
+        selectedLocation: this.yourSelectedLocation
+      }
 
-    //   url += window.location.search
+      url += window.location.search
 
-    //   console.log('pushState: ' + url)
-    //   console.dir(state)
+      console.log('pushState: ' + url)
+      console.dir(state)
 
-    //   window.history.pushState(state, null, url)
-    // },
-    // onPopState: function (event) {
-    //   console.log('onPopState: ')
-    //   console.dir(event.state)
+      window.history.pushState(state, null, url)
+    },
+    onPopState: function (event) {
+      console.log('onPopState: ')
+      console.dir(event.state)
 
-    //   if (event.state && event.state.locations) {
-    //     this.searchAreaLocations = event.state.locations
-    //   }
+      if (event.state && event.state.locations) {
+        this.searchAreaLocations = event.state.locations
+      }
 
-    //   if (event.state && event.state.selectedLocation) { // Back to location details
-    //     this.setSelectedLocation(event.state.selectedLocation)
-    //   } else { // Back to the list
-    //     this.resetSelectedLocation()
-    //   }
-    // },
+      if (event.state && event.state.selectedLocation) { // Back to location details
+        this.setSelectedLocation(event.state.selectedLocation)
+      } else { // Back to the list
+        this.resetSelectedLocation()
+      }
+    },
     setSelectedLocation: function (location) {
       console.log('setSelectedLocation: ' + location.name)
       this.yourSelectedLocation = location

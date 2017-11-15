@@ -27,6 +27,12 @@
     </nav>
 
     <nav class="secondary-nav back-nav" style="display: none">
+      <!--
+      <nuxt-link to="/locations/">
+        <img src="/assets/images/icons/back.svg" />
+        <span>Back to all results</span>
+      </nuxt-link>
+      -->
       <p class="back"><a href="" v-on:click="goBack"><img src="/assets/images/icons/back.svg"> <span>Back to all results</span></a></p>
     </nav>
   </div>
