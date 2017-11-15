@@ -176,6 +176,24 @@ export default {
     const MAPBOX_URL = 'https://api.mapbox.com/geocoding/v5/mapbox.places/'
 
     let address = route.query['address']
+
+    if (!address) {
+      let youAreHere = {
+        latitude: LOS_ANGELES.latitude,
+        longitude: LOS_ANGELES.longitude,
+        name: 'Downtown Los Angeles'
+      }
+      let sortedLocations = getSortedLimitedLocations({route, youAreHere})
+      callback(null, {
+        locations: sortedLocations,
+        youAreHere: youAreHere,
+        searchThisArea: youAreHere,
+        searchAreaName: youAreHere.name,
+        selectedLocation: null // selectedLocation
+      })
+      return
+    }
+
     let addressForGeocoding = address
     if (address.indexOf('Los Angeles') < 0) {
       addressForGeocoding += ' Los Angeles'
