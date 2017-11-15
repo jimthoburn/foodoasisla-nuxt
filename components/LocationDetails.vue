@@ -200,7 +200,7 @@ export default {
       return 'https://maps.google.com/maps?q=' + encodeURIComponent(query)
     },
     claimBusinessURL: function () {
-      let subject = `Claim Business, ${location.name}, Food Oasis LA&body=Hello team at Food Oasis LA. I’d like to claim this business… ${location.name}: https://foodoasis.la${location.uri}`
+      let subject = `Claim Business, ${this.location.name}, Food Oasis LA&body=Hello team at Food Oasis LA. I’d like to claim this business… ${this.location.name}: https://foodoasis.la${this.location.uri}`
 
       return 'mailto:contact@foodoasis.la?subject=' + encodeURIComponent(subject)
     },
