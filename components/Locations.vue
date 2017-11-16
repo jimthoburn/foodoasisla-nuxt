@@ -62,11 +62,9 @@
         v-on:selected="onLocationSelected">
       </location-list>
 
-      <!--
-      <div class="pagination">
-        <p><a href="/locations/page3/"><span>Next 20 results</span> <img src="/assets/images/icons/forward.svg" alt="" /></a></p>
+      <div class="pagination" v-if="nextPageURL">
+        <p><a v-bind:href="nextPageURL" v-on:click="onNextPage"><span>Next {{ itemsPerPage }} results</span> <img src="/assets/images/icons/forward.svg" alt="" /></a></p>
       </div>
-      -->
     </main>
   </div>
 </template>
@@ -94,6 +92,13 @@ export default {
     },
     selectedLocation: {
       type: Object
+    },
+    itemsPerPage: {
+      type: Number,
+      required: true
+    },
+    nextPageURL: {
+      type: String
     }
   },
   data: function () {
@@ -134,6 +139,14 @@ export default {
     }
   },
   methods: {
+    onNextPage: function (e) {
+      // If the user wants to open the link in a new window, let the browser handle it.
+      if (e && (e.shiftKey || e.ctrlKey || e.altKey || e.metaKey)) return
+
+      this.$emit('next-page')
+
+      e.preventDefault()
+    },
     onSearchThisArea: function (coordinates) {
       this.searchThisArea = {
         latitude: coordinates.latitude,

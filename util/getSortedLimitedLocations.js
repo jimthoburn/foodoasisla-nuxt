@@ -2,15 +2,17 @@ import sortByClosest from '~/util/sortByClosest.js'
 
 import locations from '~/data/locations.js'
 
-const listOffset = 0
-const listLimit = 20
+function getSortedLimitedLocations ({route, youAreHere, searchThisArea, pageNumber, itemsPerPage}) {
+  // If we’ve exceeded the size of the list
+  if ((pageNumber - 1) * itemsPerPage >= locations.length) {
+    return []
+  }
 
-function getSortedLimitedLocations ({route, youAreHere, searchThisArea}) {
   let limitedList = sortByClosest({
     route: route,
     locations: locations,
-    offset: listOffset,
-    limit: listLimit,
+    offset: (pageNumber - 1) * itemsPerPage,
+    limit: itemsPerPage,
     youAreHere: youAreHere,
     searchThisArea: searchThisArea
   })
