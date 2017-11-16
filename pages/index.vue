@@ -77,47 +77,18 @@ import LocationDetails from '~/components/LocationDetails.vue'
 
 import findUserLocation from '~/util/findUserLocation.js'
 import getLocationFromPageURI from '~/util/getLocationFromPageURI.js'
-import getLocationsWithCategories from '~/util/getLocationsWithCategories.js'
-import sortByClosest from '~/util/sortByClosest.js'
 import getUpdatedQueryString from '~/util/getUpdatedQueryString.js'
 
-import communityGardens from '~/data/community-garden.min.js'
-import farmersMarkets from '~/data/farmers-market.min.js'
-import foodPantries from '~/data/food-pantry.min.js'
-import summerPrograms from '~/data/summer-lunch.min.js'
-import supermarkets from '~/data/supermarket.min.js'
-
-// TBD: Consider adding this data in locations.js
-let locations = getLocationsWithCategories([...communityGardens, ...farmersMarkets, ...foodPantries, ...summerPrograms, ...supermarkets])
-
-const itemsPerPage = 20
 let popstateListener
-
-function getLimitedLocations (pageNumber) {
-  // If we’ve exceeded the size of the list
-  // if ((pageNumber - 1) * itemsPerPage >= locations.length) {
-  //   return []
-  // }
-
-  let offset = (pageNumber - 1) * itemsPerPage
-  let limit = itemsPerPage
-
-  let upperBound = offset + limit
-  if (upperBound > locations.length) upperBound = locations.length
-
-  return locations.slice(offset, upperBound)
-
-  // return this.locations.slice((pageNumber - 1) * itemsPerPage, itemsPerPage)
-}
 
 export default {
   components: {
     LocationMap, LocationList, LocationListNav, LocationDetails
   },
-  asyncData: function ({route, app}, callback) {
-    findUserLocation({route, app, locations})
+  asyncData: function ({route, app, store}, callback) {
+    findUserLocation({route, app, locations: store.state.locations})
       .then(function (youAreHere) {
-        let selectedLocation = getLocationFromPageURI({route, locations})
+        let selectedLocation = getLocationFromPageURI({route, locations: store.state.locations})
         let searchArea = (selectedLocation !== null) ? selectedLocation : youAreHere
         let pageNumber = route.query['page']
         if (!pageNumber || selectedLocation) {
@@ -125,17 +96,17 @@ export default {
         }
         pageNumber = Number(pageNumber)
 
-        locations = sortByClosest({
-          route,
-          youAreHere,
-          searchArea,
-          locations: locations
+        store.commit('sortLocationsByClosest', {
+          route: route,
+          youAreHere: youAreHere,
+          searchArea: searchArea
         })
+
         callback(null, {
           searchArea: searchArea,
           youAreHere: youAreHere,
           selectedLocation: selectedLocation,
-          limitedLocations: getLimitedLocations(pageNumber),
+          limitedLocations: store.getters.locations(pageNumber),
           pageNumber: pageNumber
         })
       })
@@ -165,7 +136,7 @@ export default {
       return true // if (process.browser) return window && 'mapboxgl' in window && window.mapboxgl.supported()
     },
     itemsPerPage () {
-      return itemsPerPage
+      return this.$store.state.itemsPerPage
     },
     nextPageURL () {
       // if ((data.list_offset + ITEMS_PER_PAGE) < size) {
@@ -188,7 +159,7 @@ export default {
   },
   methods: {
     pageNumberIsInRange (pageNumber) {
-      return pageNumber * itemsPerPage < locations.length
+      return pageNumber * this.$store.state.itemsPerPage < this.$store.state.locations.length
     },
     onNextPage: function (e) {
       // If the user wants to open the link in a new window, let the browser handle it.
@@ -202,13 +173,13 @@ export default {
 
       // this.$router.push({path: '/locations/', query: {...this.$route.query, page: this.pageNumber}})
 
-      locations = sortByClosest({
+      this.$store.commit('sortLocationsByClosest', {
         route: this.$route,
         youAreHere: this.youAreHere,
-        searchArea: this.searchArea,
-        locations: locations
+        searchArea: this.searchArea
       })
-      this.limitedLocations = getLimitedLocations(this.pageNumber)
+
+      this.limitedLocations = this.$store.getters.locations(this.pageNumber)
 
       if (process.browser) {
         // Scroll to the top of the list, since the list content has changed.
@@ -225,13 +196,13 @@ export default {
         longitude: coordinates.longitude
       }
 
-      locations = sortByClosest({
+      this.$store.commit('sortLocationsByClosest', {
         route: this.$route,
         youAreHere: this.youAreHere,
-        searchArea: this.searchArea,
-        locations: locations
+        searchArea: this.searchArea
       })
-      this.limitedLocations = getLimitedLocations(this.pageNumber)
+
+      this.limitedLocations = this.$store.getters.locations(this.pageNumber)
 
       if (process.browser) {
         // Scroll to the top of the list, since the list content has changed.
