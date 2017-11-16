@@ -33,7 +33,7 @@
         <span>Back to all results</span>
       </nuxt-link>
       -->
-      <p class="back"><a href="" v-on:click="goBack"><img src="/assets/images/icons/back.svg" alt="Back to" /> <span>More locations</span></a></p>
+      <p class="back"><a href="/locations/" v-on:click="goBack"><img src="/assets/images/icons/back.svg" alt="Back to" /> <span>More locations</span></a></p>
     </nav>
   </div>
 </template>

@@ -1,0 +1,333 @@
+<!doctype html>
+
+
+
+
+<html lang="en" dir="ltr">
+<head>
+
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+	<title>Filters, Food Oasis Los Angeles</title>
+
+	
+
+	
+	<link rel="canonical" href="https://foodoasis.la/filters/" />
+	
+
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Reem+Kufi|Open+Sans:400,400i,600" />
+	
+
+	
+	
+
+	<link rel="stylesheet" href="/assets/css/elements.css" />
+	<link rel="stylesheet" href="/assets/css/buttons.css" />
+	<link rel="stylesheet" href="/assets/css/form.css" />
+	<link rel="stylesheet" href="/assets/css/header.css" />
+	<link rel="stylesheet" href="/assets/css/footer.css" />
+	<link rel="stylesheet" href="/assets/css/nav.css" />
+	<link rel="stylesheet" href="/assets/css/map.css" />
+	<link rel="stylesheet" href="/assets/css/location-list.css" />
+	<link rel="stylesheet" href="/assets/css/location-details.css" />
+	<link rel="stylesheet" href="/assets/css/audience.css" />
+	<link rel="stylesheet" href="/assets/css/organizations.css" />
+	<link rel="stylesheet" href="/assets/css/home.css" />
+
+	
+
+	<!-- for general use -->
+	<link rel="icon" type="image/png"    href="/assets/images/favicon.png" />
+
+	<!-- for iOS -->
+	<link rel="apple-touch-icon"         href="/assets/images/favicon-rgb-240-240-240.png" />
+
+	<!-- for Windows 8 -->
+	<meta name="msapplication-TileImage" content="/assets/images/favicon.png" />
+	<meta name="msapplication-TileColor" content="rgb(240, 240, 240)" />
+
+	
+</head>
+<body>
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	<main>
+		<form action="/locations/" method="get" id="search-form">
+	<header class="header">
+		<div class="filter-nav">
+			<h1>Filters</h1>
+
+			<p><a href="/locations/" onclick="history.back();">Cancel</a></p>
+			<p><button type="submit">Done</button></p>
+		</div>
+	</header>
+
+	
+
+	<fieldset>
+		<legend>Hours</legend>
+		<ul>
+			<li>
+				<label>
+					<span>Open at</span>
+					<select name="open_start">
+						<option value="">anytime</option>
+						<option value="01:00 AM">1:00 a.m.</option>
+						<option value="02:00 AM">2:00 a.m.</option>
+						<option value="03:00 AM">3:00 a.m.</option>
+						<option value="04:00 AM">4:00 a.m.</option>
+						<option value="05:00 AM">5:00 a.m.</option>
+						<option value="06:00 AM">6:00 a.m.</option>
+						<option value="07:00 AM">7:00 a.m.</option>
+						<option value="08:00 AM">8:00 a.m.</option>
+						<option value="09:00 AM">9:00 a.m.</option>
+						<option value="10:00 AM">10:00 a.m.</option>
+						<option value="11:00 AM">11:00 a.m.</option>
+						<option value="12:00 PM">noon</option>
+						<option value="01:00 PM">1:00 p.m.</option>
+						<option value="02:00 PM">2:00 p.m.</option>
+						<option value="03:00 PM">3:00 p.m.</option>
+						<option value="04:00 PM">4:00 p.m.</option>
+						<option value="05:00 PM">5:00 p.m.</option>
+						<option value="06:00 PM">6:00 p.m.</option>
+						<option value="07:00 PM">7:00 p.m.</option>
+						<option value="08:00 PM">8:00 p.m.</option>
+						<option value="09:00 PM">9:00 p.m.</option>
+						<option value="10:00 PM">10:00 p.m.</option>
+						<option value="11:00 PM">11:00 p.m.</option>
+						<option value="00:00 AM">midnight</option>
+					</select>
+				</label>
+			</li>
+			<li>
+				<label>
+					<span>Open on</span>
+					<select name="open_days">
+						<option>any day</option>
+						<option value="sun">Sunday</option>
+						<option value="mon">Monday</option>
+						<option value="tue">Tuesday</option>
+						<option value="wed">Wednesday</option>
+						<option value="thu">Thursday</option>
+						<option value="fri">Friday</option>
+						<option value="Sat">Saturday</option>
+					</select>
+				</label>
+			</li>
+		</ul>
+	</fieldset>
+
+	<!--
+	<fieldset>
+		<legend>Open at times</legend>
+		<ul>
+			<li>
+				<label>
+					<span>Morning<br /><small>(7am-12pm)</small></span>
+					<input type="checkbox" name="open_morning" value="1" checked />
+					<span class="pseudo-checkbox"></span>
+				</label>
+			</li>
+			<li>
+				<label>
+					<span>Afternoon<br /><small>(12pm-4pm)</small></span>
+					<input type="checkbox" name="open_afternoon" value="1" checked />
+					<span class="pseudo-checkbox"></span>
+				</label>
+			</li>
+			<li>
+				<label>
+					<span>Evening<br /><small>(4pm-7pm)</small></span>
+					<input type="checkbox" name="open_evening" value="1" checked />
+					<span class="pseudo-checkbox"></span>
+				</label>
+			</li>
+		</ul>
+	</fieldset>
+
+	<fieldset>
+		<legend>Open on days</legend>
+		<ul>
+			<li>
+				<label>
+					<span>Sunday</span>
+					<input type="checkbox" name="open_sunday" value="1" checked />
+					<span class="pseudo-checkbox"></span>
+				</label>
+			</li>
+			<li>
+				<label>
+					<span>Monday</span>
+					<input type="checkbox" name="open_monday" value="1" checked />
+					<span class="pseudo-checkbox"></span>
+				</label>
+			</li>
+			<li>
+				<label>
+					<span>Tuesday</span>
+					<input type="checkbox" name="open_tuesday" value="1" checked />
+					<span class="pseudo-checkbox"></span>
+				</label>
+			</li>
+			<li>
+				<label>
+					<span>Wednesday</span>
+					<input type="checkbox" name="open_wednesday" value="1" checked />
+					<span class="pseudo-checkbox"></span>
+				</label>
+			</li>
+			<li>
+				<label>
+					<span>Thursday</span>
+					<input type="checkbox" name="open_thursday" value="1" checked />
+					<span class="pseudo-checkbox"></span>
+				</label>
+			</li>
+			<li>
+				<label>
+					<span>Friday</span>
+					<input type="checkbox" name="open_friday" value="1" checked />
+					<span class="pseudo-checkbox"></span>
+				</label>
+			</li>
+			<li>
+				<label>
+					<span>Saturday</span>
+					<input type="checkbox" name="open_saturday" value="1" checked />
+					<span class="pseudo-checkbox"></span>
+				</label>
+			</li>
+		</ul>
+	</fieldset>
+	-->
+
+	<fieldset>
+		<legend>Types</legend>
+		<ul>
+			<li class='listHeader' style='background-color: rgb(249, 192, 88); margin-top: -19px;'>    
+				Free
+			</li>
+			<li>
+				<label>
+					<img src="/assets/images/home/food-pantry.svg" width="100" alt="" />
+					<span class="classification" style="color: rgb(249, 192, 88); /* @canteloupe */">Free</span><br />
+					<span class="option">Food Pantries</span>
+					<input type="checkbox" data-name="type_option" value="food-pantry" checked="checked" />
+					<span class="pseudo-checkbox"></span>
+				</label>
+			</li>
+			<li>
+				<label>
+					<img src="/assets/images/home/orchard.svg" width="100" alt="" />
+					<span class="classification" style="color: rgb(249, 192, 88); /* @canteloupe */">Free</span><br />
+					<span class="option">Orchards</span>
+					<input type="checkbox" data-name="type_option" value="orchard" checked="checked" />
+					<span class="pseudo-checkbox"></span>
+				</label>
+			</li>
+			<li>
+				<label>
+					<img src="/assets/images/home/summer-lunch.svg" width="100" alt="" />
+					<span class="classification" style="color: rgb(249, 192, 88); /* @canteloupe */">Free</span><br />
+					<span class="option">Summer Lunch for Kids</span>
+					<input type="checkbox" data-name="type_option" value="summer-lunch" checked="checked" />
+					<span class="pseudo-checkbox"></span>
+				</label>
+			</li>
+			<li class='listHeader' style='background-color: rgb(144, 194, 70);'>
+				Grow
+			</li>
+			<li>
+				<label>
+					<img src="/assets/images/home/community-garden.svg" width="100" alt="" />
+					<span class="classification" style="color: rgb(144, 194, 70); /* @lime */">Grow</span><br />
+					<span class="option">Community Gardens</span>
+					<input type="checkbox" data-name="type_option" value="community-garden" checked="checked" />
+					<span class="pseudo-checkbox"></span>
+				</label>
+			</li>
+			<li class='listHeader' style='background-color: rgb(241, 95, 91);'>
+				Buy
+			</li>
+			<li>
+				<label>
+					<img src="/assets/images/home/farmers-market.svg" width="100" alt="" />
+					<span class="classification" style="color: rgb(241, 95, 91); /* @strawberry */">Buy</span><br />
+					<span class="option">Farmers Markets</span>
+					<input type="checkbox" data-name="type_option" value="farmers-market" checked="checked" />
+					<span class="pseudo-checkbox"></span>
+				</label>
+			</li>
+			<li>
+				<label>
+					<img src="/assets/images/home/restaurant.svg" width="100" alt="" />
+					<span class="classification" style="color: rgb(241, 95, 91); /* @strawberry */">Buy</span><br />
+					<span class="option">Restaurants</span>
+					<input type="checkbox" data-name="type_option" value="restaurant" checked="checked" />
+					<span class="pseudo-checkbox"></span>
+				</label>
+			</li>
+			<li>
+				<label>
+					<img src="/assets/images/home/pop-up-market.svg" width="100" alt="" />
+					<span class="classification" style="color: rgb(241, 95, 91); /* @strawberry */">Buy</span><br />
+					<span class="option">Pop Up Markets</span>
+					<input type="checkbox" data-name="type_option" value="pop-up-market" checked="checked" />
+					<span class="pseudo-checkbox"></span>
+				</label>
+			</li>
+			<li>
+				<label>
+					<img src="/assets/images/home/supermarket.svg" width="100" alt="" />
+					<span class="classification" style="color: rgb(241, 95, 91); /* @strawberry */">Buy</span><br />
+					<span class="option">Supermarkets</span>
+					<input type="checkbox" data-name="type_option" value="supermarket" checked="checked" />
+					<span class="pseudo-checkbox"></span>
+				</label>
+			</li>
+		</ul>
+	</fieldset>
+
+	<fieldset>
+		<legend>Research Data</legend>
+		<ul>
+			<li>
+				<label>
+					<span>Food Deserts</span>
+					<input type="checkbox" name="deserts" value="1" checked="checked" />
+					<span class="pseudo-checkbox"></span><br /><br />
+					<i>Food Deserts are low-income areas without easy access to healthy food.</i>
+				</label>
+			</li>
+		</ul>
+	</fieldset>
+
+	<p class="action reset">
+		<button type="reset">Reset</button>
+	</p>
+
+	<input type="hidden" name="address" />
+	<input type="hidden" name="type" />
+</form>
+
+<script src="/assets/js/search.js"></script>
+
+	</main>
+
+	
+
+	
+
+</body>
+</html>
