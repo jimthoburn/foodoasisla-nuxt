@@ -165,7 +165,7 @@ export default {
       if (this.currentMarker) this.currentMarker.classList.remove('active')
 
       this.currentMarker = this.getMarkerFromLocation(location)
-      this.currentMarker.classList.add('active')
+      if (this.currentMarker) this.currentMarker.classList.add('active')
     },
     getMarkerFromLocation: function (location) {
       // Assume that the markers array is in the same order as the locations array

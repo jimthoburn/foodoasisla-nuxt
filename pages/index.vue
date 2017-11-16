@@ -173,7 +173,13 @@ export default {
       }
     },
     searchAreaName () {
-      return this.youAreHere ? this.youAreHere.name : null
+      if (this.searchArea && this.searchArea.name) {
+        return this.searchArea.name
+      } else if (this.youAreHere && this.youAreHere.name) {
+        return this.youAreHere.name
+      } else {
+        return 'Los Angeles'
+      }
     }
   },
   methods: {
@@ -189,6 +195,8 @@ export default {
       this.pushState(this.nextPageURL)
 
       this.pageNumber++
+
+      // this.$router.push({path: '/locations/', query: {...this.$route.query, page: this.pageNumber}})
 
       locations = sortByClosest({
         route: this.$route,

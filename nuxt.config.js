@@ -69,6 +69,12 @@ module.exports = {
     extendRoutes (routes, resolve) {
       routes.push({
         name: 'locations',
+        path: '*',
+        component: resolve(__dirname, 'pages/index.vue')
+      })
+      /*
+      routes.push({
+        name: 'locations',
         path: '/locations/:name?',
         component: resolve(__dirname, 'pages/index.vue')
       })
@@ -102,6 +108,7 @@ module.exports = {
         path: '/cultivate-la/:name?',
         component: resolve(__dirname, 'pages/index.vue')
       })
+      */
     }
   },
   modules: [

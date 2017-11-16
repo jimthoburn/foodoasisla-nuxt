@@ -1,7 +1,7 @@
 {
-  "name": "nuxt",
+  "name": "foodoasis-la",
   "version": "1.0.0",
-  "description": "Nuxt.js project",
+  "description": "A map of healthy food locations",
   "author": "Jim Thoburn <jim@jimthoburn.com>",
   "private": true,
   "scripts": {
@@ -15,7 +15,6 @@
   },
   "dependencies": {
     "@nuxtjs/axios": "^4.4.0",
-    "mapbox": "^1.0.0-beta9",
     "nuxt": "^1.0.0-rc11"
   },
   "devDependencies": {
