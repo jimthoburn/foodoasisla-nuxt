@@ -81,10 +81,14 @@ import getLocationsWithCategories from '~/util/getLocationsWithCategories.js'
 import sortByClosest from '~/util/sortByClosest.js'
 import getUpdatedQueryString from '~/util/getUpdatedQueryString.js'
 
-import locationsData from '~/data/locations.js'
+import communityGardens from '~/data/community-garden.min.js'
+import farmersMarkets from '~/data/farmers-market.min.js'
+import foodPantries from '~/data/food-pantry.min.js'
+import summerPrograms from '~/data/summer-lunch.min.js'
+import supermarkets from '~/data/supermarket.min.js'
 
 // TBD: Consider adding this data in locations.js
-let locations = getLocationsWithCategories(locationsData)
+let locations = getLocationsWithCategories([...communityGardens, ...farmersMarkets, ...foodPantries, ...summerPrograms, ...supermarkets])
 
 const itemsPerPage = 20
 let popstateListener
@@ -137,7 +141,7 @@ export default {
       })
   },
   created () {
-    console.log('created')
+    // console.log('created')
     this.searchArea = this.youAreHere // Start out by searching near you
 
     if (process.browser) {
@@ -146,7 +150,7 @@ export default {
     }
   },
   destroyed () {
-    console.log('destroyed')
+    // console.log('destroyed')
     if (process.browser) {
       if (popstateListener) window.removeEventListener('popstate', popstateListener)
     }
@@ -259,14 +263,14 @@ export default {
         selectedLocation: this.selectedLocation
       }
 
-      console.log('pushState: ' + url)
-      console.dir(state)
+      // console.log('pushState: ' + url)
+      // console.dir(state)
 
       window.history.pushState(state, null, url)
     },
     onPopState: function (event) {
-      console.log('onPopState: ')
-      console.dir(event.state)
+      // console.log('onPopState: ')
+      // console.dir(event.state)
 
       if (event.state && event.state.locations) {
         this.limitedLocations = event.state.limitedLocations
@@ -287,7 +291,7 @@ export default {
       }
     },
     setSelectedLocation: function (location) {
-      console.log('setSelectedLocation: ' + location.name)
+      // console.log('setSelectedLocation: ' + location.name)
       this.selectedLocation = location
 
       // Scroll to the top of the page, since the page content has changed.

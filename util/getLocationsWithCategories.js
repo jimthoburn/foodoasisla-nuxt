@@ -1,6 +1,5 @@
-import locations from '~/data/locations.js'
 
-function getLocationsWithCategories () {
+function getLocationsWithCategories (locations) {
   for (let index = 0; index < locations.length; index++) {
     let category = locations[index].category.toLowerCase().replace(/\s/g, '-') // Example: farmers-market
 

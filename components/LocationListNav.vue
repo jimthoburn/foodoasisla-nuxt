@@ -4,7 +4,7 @@
         
       <ul class="options" id="search-views">
         <li class="filter">
-          <a v-bind:href="'https://foodoasis.la/filters/' + queryString" id="filters-link">
+          <a v-bind:href="'/filters/' + queryString" id="filters-link">
             <svg viewBox="0 0 20 15" width="15" height="15">
               <path d="M6.6,2.6C6.2,1.2,4.9,0.1,3.4,0.1c-1.8,0-3.3,1.5-3.3,3.3c0,1.8,1.5,3.3,3.3,3.3c1.5,0,2.8-1.1,3.1-2.5h13.2 V2.6H6.6z M3.4,5.1c-0.9,0-1.7-0.7-1.7-1.7c0-0.9,0.7-1.7,1.7-1.7c0.9,0,1.7,0.7,1.7,1.7C5.1,4.3,4.3,5.1,3.4,5.1z"></path>
               <path d="M10.4,8.1c-1.5,0-2.8,1.1-3.1,2.5H1v1.6h6.2c0.4,1.4,1.6,2.5,3.1,2.5c1.5,0,2.8-1.1,3.1-2.5h6.2v-1.6h-6.2 C13.2,9.1,11.9,8.1,10.4,8.1z M10.4,13c-0.9,0-1.7-0.7-1.7-1.7c0-0.9,0.7-1.7,1.7-1.7c0.9,0,1.7,0.7,1.7,1.7 C12.1,12.3,11.3,13,10.4,13z"></path>
@@ -13,7 +13,7 @@
           </a>
         </li>
         <li class="search">
-          <a v-bind:href="'https://foodoasis.la/search/' + queryString" id="search-link">
+          <a v-bind:href="'/search/' + queryString" id="search-link">
             <img src="/assets/images/icons/search-black.svg" width="50" alt="Search">
             <span id="search-type" style="text-transform: capitalize;">{{ searchType }}</span> near <em id="search-location" style="font-style: normal;">{{ searchAreaName }}</em>
           </a>

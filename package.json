@@ -9,8 +9,15 @@
     "build": "nuxt build",
     "start": "nuxt start",
     "generate": "nuxt generate",
+    "heroku-postbuild": "npm run build",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "lint-fix": "eslint --fix --ext .js,.vue --ignore-path .gitignore .",
+    "minify-community-garden": "uglifyjs ./data/community-garden.js -o ./data/community-garden.min.js",
+    "minify-farmers-market": "uglifyjs ./data/farmers-market.js -o ./data/farmers-market.min.js",
+    "minify-food-pantry": "uglifyjs ./data/food-pantry.js -o ./data/food-pantry.min.js",
+    "minify-summer-lunch": "uglifyjs ./data/summer-lunch.js -o ./data/summer-lunch.min.js",
+    "minify-supermarket": "uglifyjs ./data/supermarket.js -o ./data/supermarket.min.js",
+    "minify-data": "npm run minify-community-garden && npm run minify-farmers-market && npm run minify-food-pantry && npm run minify-summer-lunch && npm run minify-supermarket",
     "precommit": "npm run lint"
   },
   "dependencies": {
@@ -26,6 +33,7 @@
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-node": "^5.1.1",
     "eslint-plugin-promise": "^3.5.0",
-    "eslint-plugin-standard": "^3.0.1"
+    "eslint-plugin-standard": "^3.0.1",
+    "uglify-es": "^3.1.9"
   }
 }
