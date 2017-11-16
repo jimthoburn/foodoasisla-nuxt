@@ -56,6 +56,8 @@ export default {
 
     // Update the markers if the locations data changes
     locations: function () {
+      this.hideSearchThisArea()
+      this.resetCurrentMarker()
       this.updateMarkers()
     },
 

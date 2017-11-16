@@ -4,15 +4,15 @@ import isOpenOnDayTime from '~/util/isOpenOnDayTime.js'
 const INFINITY = 9999999
 
 // youAreHere is the position of the center of the map
-// searchThisArea is the position the user searched for
+// searchArea is the position the user searched for
 
 // These two sets of coordinates are the same, when the page first loads
 // but may diverge if the user presses the “search here” button on the map
-function sortByClosest ({route, locations, offset, limit, youAreHere, searchThisArea}) {
+function sortByClosest ({route, locations, youAreHere, searchArea}) {
   // console.log('youAreHere.latitude: ' + youAreHere.latitude)
   // console.log('youAreHere.longitude: ' + youAreHere.longitude)
-  // console.log('searchThisArea.latitude: ' + searchThisArea.latitude)
-  // console.log('searchThisArea.longitude: ' + searchThisArea.longitude)
+  // console.log('searchArea.latitude: ' + searchArea.latitude)
+  // console.log('searchArea.longitude: ' + searchArea.longitude)
 
   let list = []
   let nextLatitude, nextLongitude, distanceFromYou, distanceFromSearchArea
@@ -21,7 +21,7 @@ function sortByClosest ({route, locations, offset, limit, youAreHere, searchThis
     nextLongitude = locations[ index ].longitude
     if (nextLatitude !== null && nextLatitude !== '') {
       distanceFromYou = getDistanceInKilometers(youAreHere.latitude, youAreHere.longitude, parseFloat(nextLatitude), parseFloat(nextLongitude))
-      distanceFromSearchArea = getDistanceInKilometers(searchThisArea.latitude, searchThisArea.longitude, parseFloat(nextLatitude), parseFloat(nextLongitude))
+      distanceFromSearchArea = getDistanceInKilometers(searchArea.latitude, searchArea.longitude, parseFloat(nextLatitude), parseFloat(nextLongitude))
     } else {
       distanceFromYou = INFINITY
       distanceFromSearchArea = INFINITY
@@ -79,10 +79,7 @@ function sortByClosest ({route, locations, offset, limit, youAreHere, searchThis
     })
   }
 
-  let upperBound = offset + limit
-  if (upperBound > list.length) upperBound = list.length
-
-  return list.slice(offset, upperBound)
+  return list
 }
 
 export default sortByClosest
