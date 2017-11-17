@@ -82,6 +82,11 @@ import getUpdatedQueryString from '~/util/getUpdatedQueryString.js'
 let popstateListener
 
 export default {
+  head () {
+    return {
+      title: 'Healthy food in Los Angeles'
+    }
+  },
   components: {
     LocationMap, LocationList, LocationListNav, LocationDetails
   },

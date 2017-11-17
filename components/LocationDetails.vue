@@ -152,11 +152,11 @@ export default {
       // Add a message encouraging the visitor to call ahead before visiting a location.
       if (this.location.phone !== '') {
         return `
-          Before you visit, please call this location’s phone number: ${this.location.phone} and ask them for their address and hours.
+          Before you visit, please call this location’s phone number: ${this.location.phone} and ask for their address and hours.
         `
       } else {
         return `
-          Before you visit, please contact this location and ask them for their address and hours.
+          Before you visit, please contact this location and ask for their address and hours.
         `
       }
     },

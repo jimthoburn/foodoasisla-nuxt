@@ -8,7 +8,7 @@
 <script>
 import mapOptions from '~/util/mapOptions.js'
 
-let oasisMap
+let oasisMap = null
 
 export default {
   props: {
