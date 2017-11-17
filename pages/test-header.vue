@@ -38,34 +38,6 @@
       <location-list-nav v-bind:search-area-name="searchAreaName" v-on:back="onBackToList"></location-list-nav>
 
     </header>
-
-    <!-- FOLA’s Mapbox API key (token) -->
-    <location-map
-      v-bind:locations="limitedLocations"
-      v-bind:selected-location="selectedLocation"
-      v-bind:you-are-here="youAreHere"
-      v-on:selected="onLocationSelected"
-      v-on:search-this-area="onsearchArea"
-      token="pk.eyJ1IjoiZm9vZG9hc2lzbGEiLCJhIjoiY2l0ZjdudnN4MDhpYzJvbXlpb3IyOHg2OSJ9.POBdqXF5EIsGwfEzCm8Y3Q">
-    </location-map>
-
-    <location-details
-      v-if="selectedLocation"
-      v-bind:location="selectedLocation">
-    </location-details>
-
-    <main>
-      <h2><a href="#list-results" id="list-results-title">List Results</a></h2>
-
-      <location-list
-        v-bind:locations="limitedLocations"
-        v-on:selected="onLocationSelected">
-      </location-list>
-
-      <div class="pagination" v-if="nextPageURL">
-        <p><a v-bind:href="nextPageURL" v-on:click="onNextPage"><span>Next {{ itemsPerPage }} results</span> <img src="/assets/images/icons/forward.svg" alt="" /></a></p>
-      </div>
-    </main>
   </div>
 </template>
 
