@@ -2,7 +2,7 @@
   <li v-bind:class="[location.categoryCode, location.parentCategoryCode]">
     <img v-bind:src="'/assets/images/home/' + location.categoryCode + '.svg'" width="100" alt="" />
     <h2>{{ location.name }}</h2>
-    <p v-if="isOpenNow" class="open">Open Now</p>
+    <p v-show="isOpenNow" class="open">Open Now</p>
   </li>
 </template>
 

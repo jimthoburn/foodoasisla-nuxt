@@ -1,9 +1,8 @@
 <template>
   <li v-bind:class="[location.categoryCode, location.parentCategoryCode]">
-    <a v-on:click="showLocationDetails" v-bind:href="locationURI" class="location-summary">
-      <img v-bind:src="'/assets/images/home/' + location.categoryCode + '.svg'" width="100" alt="" />
-      <h2>{{ location.name }}</h2>
-    </a>
+    <img v-bind:src="'/assets/images/home/' + location.categoryCode + '.svg'" width="100" alt="" />
+    <h2>{{ location.name }}</h2>
+    <p class="open">Open Now</p>
   </li>
 </template>
 
