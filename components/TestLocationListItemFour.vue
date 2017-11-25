@@ -2,7 +2,6 @@
   <li v-bind:class="[location.categoryCode, location.parentCategoryCode]">
     <img v-bind:src="'/assets/images/home/' + location.categoryCode + '.svg'" width="100" alt="" />
     <h2>{{ location.name }}</h2>
-    <p class="address">{{ location.address_1 }}<span v-if="location.address_2"><br />{{ location.address_2 }}</span></p>
   </li>
 </template>
 
