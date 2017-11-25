@@ -10,7 +10,7 @@ import foodPantries from '~/data/food-pantry.min.js'
 import summerPrograms from '~/data/summer-lunch.min.js'
 import supermarkets from '~/data/supermarket.min.js'
 
-// TBD: Consider adding this data in the data files ahead of time
+// TBD: Consider including categories in the data files ahead of time
 let locations = getLocationsWithCategories([
   ...miscLocations,
   ...communityGardens,

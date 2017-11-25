@@ -77,12 +77,36 @@
 
 	<fieldset>
 		<legend>Hours</legend>
+		<!--
+		 <div style="display:flex; flex-direction: row; justify-content: center">
+				Start<input type="time" name="open_start">
+				End<input type="time" name="open_end">
+		</div> 
+		<div style="text-align:center">
+			<select name="open_days" multiple>
+				<option value="Sunday">Sunday</option>
+				<option value="Monday">Monday</option>
+				<option value="Tuesday">Tuesday</option>
+				<option value="Wednesday">Wednesday</option>
+				<option value="Thursday">Thursday</option>
+				<option value="Friday">Friday</option>
+				<option value="Saturday">Saturday</option>
+			</select>
+		</div>
+		-->
 		<ul>
+			<li>
+				<label>
+					<span>Only show locations that are open</span>
+					<input type="checkbox" name="open" value="1" />
+					<span class="pseudo-checkbox"></span> 
+				</label>
+			</li>
 			<li>
 				<label>
 					<span>Open at</span>
 					<select name="open_start">
-						<option value="">anytime</option>
+						<option value="">the current time</option>
 						<option value="01:00 AM">1:00 a.m.</option>
 						<option value="02:00 AM">2:00 a.m.</option>
 						<option value="03:00 AM">3:00 a.m.</option>
@@ -110,107 +134,8 @@
 					</select>
 				</label>
 			</li>
-			<li>
-				<label>
-					<span>Open on</span>
-					<select name="open_days">
-						<option>any day</option>
-						<option value="sun">Sunday</option>
-						<option value="mon">Monday</option>
-						<option value="tue">Tuesday</option>
-						<option value="wed">Wednesday</option>
-						<option value="thu">Thursday</option>
-						<option value="fri">Friday</option>
-						<option value="Sat">Saturday</option>
-					</select>
-				</label>
-			</li>
 		</ul>
 	</fieldset>
-
-	<!--
-	<fieldset>
-		<legend>Open at times</legend>
-		<ul>
-			<li>
-				<label>
-					<span>Morning<br /><small>(7am-12pm)</small></span>
-					<input type="checkbox" name="open_morning" value="1" checked />
-					<span class="pseudo-checkbox"></span>
-				</label>
-			</li>
-			<li>
-				<label>
-					<span>Afternoon<br /><small>(12pm-4pm)</small></span>
-					<input type="checkbox" name="open_afternoon" value="1" checked />
-					<span class="pseudo-checkbox"></span>
-				</label>
-			</li>
-			<li>
-				<label>
-					<span>Evening<br /><small>(4pm-7pm)</small></span>
-					<input type="checkbox" name="open_evening" value="1" checked />
-					<span class="pseudo-checkbox"></span>
-				</label>
-			</li>
-		</ul>
-	</fieldset>
-
-	<fieldset>
-		<legend>Open on days</legend>
-		<ul>
-			<li>
-				<label>
-					<span>Sunday</span>
-					<input type="checkbox" name="open_sunday" value="1" checked />
-					<span class="pseudo-checkbox"></span>
-				</label>
-			</li>
-			<li>
-				<label>
-					<span>Monday</span>
-					<input type="checkbox" name="open_monday" value="1" checked />
-					<span class="pseudo-checkbox"></span>
-				</label>
-			</li>
-			<li>
-				<label>
-					<span>Tuesday</span>
-					<input type="checkbox" name="open_tuesday" value="1" checked />
-					<span class="pseudo-checkbox"></span>
-				</label>
-			</li>
-			<li>
-				<label>
-					<span>Wednesday</span>
-					<input type="checkbox" name="open_wednesday" value="1" checked />
-					<span class="pseudo-checkbox"></span>
-				</label>
-			</li>
-			<li>
-				<label>
-					<span>Thursday</span>
-					<input type="checkbox" name="open_thursday" value="1" checked />
-					<span class="pseudo-checkbox"></span>
-				</label>
-			</li>
-			<li>
-				<label>
-					<span>Friday</span>
-					<input type="checkbox" name="open_friday" value="1" checked />
-					<span class="pseudo-checkbox"></span>
-				</label>
-			</li>
-			<li>
-				<label>
-					<span>Saturday</span>
-					<input type="checkbox" name="open_saturday" value="1" checked />
-					<span class="pseudo-checkbox"></span>
-				</label>
-			</li>
-		</ul>
-	</fieldset>
-	-->
 
 	<fieldset>
 		<legend>Types</legend>
@@ -331,3 +256,4 @@
 
 </body>
 </html>
+
