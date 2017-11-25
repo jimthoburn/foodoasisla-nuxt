@@ -127,7 +127,6 @@ export default {
     updateIsOpenNow.call(this)
 
     if (process.browser) {
-      setTimeout(updateIsOpenNow.bind(this), 1000)
       isOpenNowTimer = setInterval(updateIsOpenNow.bind(this), 60 * 1000) // update once per minute
     }
   },
