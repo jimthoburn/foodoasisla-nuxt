@@ -36,10 +36,8 @@ export default {
       return this.location.uri + getQueryString(this.$route)
     },
     isOpenNow: function () {
-      for (let index = 0; index < this.location.hours.length; index++) {
-        if (isOpenOnDayTime(this.location.hours[index])) {
-          return true
-        }
+      if (this.location.hours.length >= 1 && isOpenOnDayTime(this.location.hours[0])) {
+        return true
       }
       return false
     }
