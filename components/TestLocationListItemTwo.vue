@@ -7,8 +7,19 @@
 </template>
 
 <script>
+import isOpenOnDayTime from '~/util/isOpenOnDayTime.js'
 import getQueryString from '~/util/getQueryString.js'
 import getDistanceForPresentation from '~/util/getDistanceForPresentation.js'
+
+let isOpenNowTimer
+function isOpenNow () {
+  for (let index = 0; index < this.location.hours.length; index++) {
+    if (isOpenOnDayTime(this.location.hours[index])) {
+      return true
+    }
+  }
+  return false
+}
 
 export default {
   props: {
@@ -19,8 +30,19 @@ export default {
   },
   data () {
     return {
-      isOpenNow: true
+      isOpenNow: false
     }
+  },
+  created () {
+    this.isOpenNow = isOpenNow.apply(this)
+
+    isOpenNowTimer = setInterval(function () {
+      this.isOpenNow = isOpenNow.apply(this)
+    }.bind(this), 60 * 1000) // one minute
+  },
+  destroyed () {
+    if (isOpenNowTimer) clearTimeout(isOpenNowTimer)
+    isOpenNowTimer = undefined
   },
   methods: {
     showLocationDetails: function (e) {
