@@ -17,13 +17,13 @@ import getQueryString from '~/util/getQueryString.js'
 import getDistanceForPresentation from '~/util/getDistanceForPresentation.js'
 
 let isOpenNowTimer
-function isOpenNow () {
-  for (let index = 0; index < this.location.hours.length; index++) {
-    if (isOpenOnDayTime(this.location.hours[index])) {
-      return true
-    }
-  }
-  return false
+function updateIsOpenNow () {
+  this.isOpenNow = false
+  this.location.hours.forEach(function (hours) {
+    let isOpen = isOpenOnDayTime(hours)
+    // this.isOpenNowOnWeekdays[hours.day] = isOpen
+    if (isOpen === true) this.isOpenNow = isOpen
+  }.bind(this))
 }
 
 export default {
@@ -36,18 +36,35 @@ export default {
   data () {
     return {
       isOpenNow: false
+      // isOpenNowOnWeekdays: {
+      //   'sun': false,
+      //   'mon': false,
+      //   'tue': false,
+      //   'wed': false,
+      //   'thu': false,
+      //   'fri': false,
+      //   'sat': false
+      // }
     }
   },
   created () {
-    this.isOpenNow = isOpenNow.apply(this)
+    updateIsOpenNow.call(this)
 
-    isOpenNowTimer = setInterval(function () {
-      this.isOpenNow = isOpenNow.apply(this)
-    }.bind(this), 60 * 1000) // one minute
+    if (process.browser) {
+      setTimeout(updateIsOpenNow.bind(this), 1000)
+      isOpenNowTimer = setInterval(updateIsOpenNow.bind(this), 60 * 1000) // update once per minute
+    }
   },
   destroyed () {
-    if (isOpenNowTimer) clearTimeout(isOpenNowTimer)
-    isOpenNowTimer = undefined
+    if (process.browser) {
+      if (isOpenNowTimer) clearInterval(isOpenNowTimer)
+      isOpenNowTimer = undefined
+    }
+  },
+  watch: {
+    location: function () {
+      updateIsOpenNow.call(this)
+    }
   },
   methods: {
     showLocationDetails: function (e) {

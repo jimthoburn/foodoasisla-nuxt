@@ -4,11 +4,11 @@
       <div class="location-summary">
         <img v-bind:src="'/assets/images/home/' + location.categoryCode + '.svg'" width="100" alt="" />
         <h2>{{ location.name }}</h2>
-              <p class="address">{{ location.address_1 }}<span v-if="location.address_2"><br />{{ location.address_2 }}</span></p>
-              <p class="type">{{ location.category }}</p>
-              <p v-if="isOpenNow" class="open">Open Now</p>
-              <p class="distance"><span>{{ distance }}</span> <abbr title="miles">mi</abbr></p>
-          </div>
+        <p class="address">{{ location.address_1 }}<span v-if="location.address_2"><br />{{ location.address_2 }}</span></p>
+        <p class="type">{{ location.category }}</p>
+        <p v-if="isOpenNow" class="open">Open Now</p>
+        <p class="distance"><span>{{ distance }}</span> <abbr title="miles">mi</abbr></p>
+      </div>
 
       <ul class="options action">
         <li><a href="#shareable-link" v-on:click.prevent="shareableLinkActive = true"><span><img src="/assets/images/icons/share.svg" height="24" class="icon" alt="" /></span> <span>Share</span></a></li>
@@ -47,7 +47,7 @@
         <dl>
           <template v-for="item in location.hours">
             <dt>{{ getFormattedWeekday(item) }}</dt>
-            <dd v-if="isOpenNowOnWeekday(item)" class="open"><span>{{ getFormattedHours(item) }}</span> <i>Open Now</i></dd>
+            <dd v-if="isOpenNowOnWeekdays[item.day]" class="open"><span>{{ getFormattedHours(item) }}</span> <i>Open Now</i></dd>
             <dd v-else-if="item.open"><span>{{ getFormattedHours(item) }}</span></dd>
             <dd v-else><i>Closed</i></dd>
           </template>
@@ -88,6 +88,16 @@
 import isOpenOnDayTime from '~/util/isOpenOnDayTime.js'
 import getDistanceForPresentation from '~/util/getDistanceForPresentation.js'
 
+let isOpenNowTimer
+function updateIsOpenNow () {
+  this.isOpenNow = false
+  this.location.hours.forEach(function (hours) {
+    let isOpen = isOpenOnDayTime(hours)
+    this.isOpenNowOnWeekdays[hours.day] = isOpen
+    if (isOpen === true) this.isOpenNow = isOpen
+  }.bind(this))
+}
+
 export default {
   props: {
     location: {
@@ -95,10 +105,39 @@ export default {
       required: true
     }
   },
-  data: function () {
+  data () {
     return {
       shareableLinkActive: false,
-      directionsActive: false
+      directionsActive: false,
+      isOpenNow: false,
+      isOpenNowOnWeekdays: {
+        'sun': false,
+        'mon': false,
+        'tue': false,
+        'wed': false,
+        'thu': false,
+        'fri': false,
+        'sat': false
+      }
+    }
+  },
+  created () {
+    updateIsOpenNow.call(this)
+
+    if (process.browser) {
+      setTimeout(updateIsOpenNow.bind(this), 1000)
+      isOpenNowTimer = setInterval(updateIsOpenNow.bind(this), 60 * 1000) // update once per minute
+    }
+  },
+  destroyed () {
+    if (process.browser) {
+      if (isOpenNowTimer) clearInterval(isOpenNowTimer)
+      isOpenNowTimer = undefined
+    }
+  },
+  watch: {
+    location: function () {
+      updateIsOpenNow.call(this)
     }
   },
   methods: {
@@ -122,15 +161,9 @@ export default {
 
       return hours.day
     },
-
-    isOpenNowOnWeekday: function (weekdayHours) {
-      return isOpenOnDayTime(weekdayHours)
-    },
-
     getFormattedHours: function (hours) {
       return this.formatTime(hours.open) + ' – ' + this.formatTime(hours.close)
     },
-
     formatTime: function (timeString) { // Example: 1430 ==> 2:30pm; 0900 ==> 9:00am
       let hours = Number(timeString.substring(0, timeString.length - 2))
       let minutes = timeString.substring(timeString.length - 2)
@@ -211,14 +244,6 @@ export default {
       }
 
       return 'https://form.jotform.com/62638504761156?' + queryString.join('&')
-    },
-    isOpenNow: function () {
-      for (let index = 0; index < this.location.hours.length; index++) {
-        if (isOpenOnDayTime(this.location.hours[index])) {
-          return true
-        }
-      }
-      return false
     },
     hasHours: function () {
       return this.location.hours.length > 0
