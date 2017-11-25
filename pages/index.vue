@@ -83,9 +83,20 @@ let popstateListener
 
 export default {
   head () {
-    return {
-      title: 'Healthy food in Los Angeles'
+    let elements = {
+      link: [
+        { rel: 'canonical', href: `https://foodoasis.la${this.$route.path}` }
+      ]
     }
+    let selectedLocation = getLocationFromPageURI({route: this.$route, locations: this.$store.state.locations})
+
+    if (selectedLocation) {
+      elements.title = `${selectedLocation.name}, Food Oasis Los Angeles`
+    } else {
+      elements.title = 'Healthy food in Los Angeles'
+    }
+
+    return elements
   },
   components: {
     LocationMap, LocationList, LocationListNav, LocationDetails
@@ -216,23 +227,23 @@ export default {
         window.scrollTo(0, 0)
       }
 
-      if (process.browser) {
-        this.pushState()
-      }
+      // if (process.browser) {
+      //   this.pushState()
+      // }
     },
     onBackToList: function (event) {
       this.resetSelectedLocation()
       if (process.browser) {
-        this.pushState('/locations/' + window.location.search)
+        this.pushState('/locations/' + window.location.search, 'Healthy food in Los Angeles')
       }
     },
     onLocationSelected: function (location) {
       this.setSelectedLocation(location)
       if (process.browser) {
-        this.pushState(location.uri + window.location.search)
+        this.pushState(location.uri + window.location.search, `${location.name}, Food Oasis Los Angeles`)
       }
     },
-    pushState: function (url) {
+    pushState: function (url, title) {
       let state = {
         searchArea: this.searchArea,
         limitedLocations: this.limitedLocations,
@@ -241,6 +252,8 @@ export default {
 
       // console.log('pushState: ' + url)
       // console.dir(state)
+
+      if (title) document.title = title
 
       window.history.pushState(state, null, url)
     },
