@@ -47,9 +47,11 @@
         <dl>
           <template v-for="item in location.hours">
             <dt>{{ getFormattedWeekday(item) }}</dt>
-            <dd v-if="isOpenNowOnWeekdays[item.day]" class="open"><span>{{ getFormattedHours(item) }}</span> <i>Open Now</i></dd>
-            <dd v-else-if="item.open"><span>{{ getFormattedHours(item) }}</span></dd>
-            <dd v-else><i>Closed</i></dd>
+            <dd v-bind:class="{ open: isOpenNowOnWeekdays[item.day] }">
+              <span v-show="item.open">{{ getFormattedHours(item) }}</span>
+              <i v-show="isOpenNowOnWeekdays[item.day]">Open Now</i>
+              <i v-show="!item.open">Closed</i>
+            </dd>
           </template>
         </dl>
       </section>
