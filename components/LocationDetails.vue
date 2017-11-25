@@ -6,7 +6,7 @@
         <h2>{{ location.name }}</h2>
         <p class="address">{{ location.address_1 }}<span v-if="location.address_2"><br />{{ location.address_2 }}</span></p>
         <p class="type">{{ location.category }}</p>
-        <p v-if="isOpenNow" class="open">Open Now</p>
+        <p v-show="isOpenNow" class="open">Open Now</p>
         <p class="distance"><span>{{ distance }}</span> <abbr title="miles">mi</abbr></p>
       </div>
 
