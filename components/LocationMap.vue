@@ -1,7 +1,11 @@
 <template>
   <div>
     <p class="action search-this-area"><a href="" v-on:click.prevent="searchThisArea">Search this area</a></p>
-    <div id="map" class="map-container" v-bind:class="{ active: mapBoxSupported }"></div>
+    <div id="map" class="map-container mapboxgl-map active" v-if="mapBoxSupported"></div>
+    <section role="status" class="message" v-else>
+      <h1>Oops! Our map isn’t working.</h1>
+      <p><a href="https://www.mapbox.com/help/mapbox-browser-support/">Learn more on the Mapbox web site</a>.</p>
+    </section>
   </div>
 </template>
 
@@ -26,6 +30,8 @@ export default {
   mounted: function () {
     /* SHIM: Wait a moment before rendering the map, so the size will be correct */
     setTimeout(function () {
+      this.mapBoxSupported = 'mapboxgl' in window && window.mapboxgl.supported()
+
       this.createMap()
 
       if (this.locations && this.locations.length) {
@@ -37,7 +43,7 @@ export default {
             lat: this.selectedLocation.latitude
           }
 
-          oasisMap.setCenter(coordinates)
+          if (oasisMap) oasisMap.setCenter(coordinates)
         }
       }
     }.bind(this), 1)
@@ -49,7 +55,8 @@ export default {
       skipNextMoveMap: false, // SHIM: Avoid moving the map when clicking on markers
       markers: [],
       currentMarker: null,
-      initializingMarkers: true
+      initializingMarkers: true,
+      mapBoxSupported: true
     }
   },
   watch: {
@@ -74,9 +81,6 @@ export default {
     }
   },
   methods: {
-    mapBoxSupported () {
-      return true // if (process.browser) return window && 'mapboxgl' in window && window.mapboxgl.supported()
-    },
     showSearchThisArea () {
       document.body.classList.add('has-search-this-area')
     },
@@ -92,11 +96,11 @@ export default {
       this.$emit('search-this-area', { latitude: center[1], longitude: center[0] })
     },
     createMap () {
-      if (process.browser && document.getElementById('map') && this.mapBoxSupported()) {
+      if (process.browser && this.mapBoxSupported && this.$el.querySelector('#map')) {
         window.mapboxgl.accessToken = this.token
 
         oasisMap = new window.mapboxgl.Map({
-          container: document.getElementById('map'),
+          container: this.$el.querySelector('#map'),
           style: mapOptions.MAP_STYLE,
           maxBounds: mapOptions.MAP_BOUNDS
         })
@@ -259,6 +263,8 @@ export default {
       // console.dir(this.markers);
     },
     fitMarkers: function (bounds) {
+      if (!oasisMap) return
+
       oasisMap.setZoom(15)
 
       let mapLngLatBounds = new window.mapboxgl.LngLatBounds()
