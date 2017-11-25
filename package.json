@@ -14,12 +14,14 @@
     "precommit": "npm run lint",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "lint:fix": "eslint --fix --ext .js,.vue --ignore-path .gitignore .",
+    "minify-locations": "uglifyjs ./data/locations.js -o ./data/locations.min.js",
     "minify-community-garden": "uglifyjs ./data/community-garden.js -o ./data/community-garden.min.js",
     "minify-farmers-market": "uglifyjs ./data/farmers-market.js -o ./data/farmers-market.min.js",
     "minify-food-pantry": "uglifyjs ./data/food-pantry.js -o ./data/food-pantry.min.js",
     "minify-summer-lunch": "uglifyjs ./data/summer-lunch.js -o ./data/summer-lunch.min.js",
     "minify-supermarket": "uglifyjs ./data/supermarket.js -o ./data/supermarket.min.js",
-    "minify-data": "npm run minify-community-garden && npm run minify-farmers-market && npm run minify-food-pantry && npm run minify-summer-lunch && npm run minify-supermarket",
+    "minify-data": "npm run minify-locations && npm run minify-community-garden && npm run minify-farmers-market && npm run minify-food-pantry && npm run minify-summer-lunch && npm run minify-supermarket",
+    "minify-and-lint-data": "npm run minify-data && eslint --fix ./data/ --ext .min.js",
     "heroku-postbuild": "npm run build"
   },
   "dependencies": {

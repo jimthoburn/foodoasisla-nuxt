@@ -45,7 +45,7 @@
       v-bind:selected-location="selectedLocation"
       v-bind:you-are-here="youAreHere"
       v-on:selected="onLocationSelected"
-      v-on:search-this-area="onsearchArea"
+      v-on:search-this-area="onSearchArea"
       token="pk.eyJ1IjoiZm9vZG9hc2lzbGEiLCJhIjoiY2l0ZjdudnN4MDhpYzJvbXlpb3IyOHg2OSJ9.POBdqXF5EIsGwfEzCm8Y3Q">
     </location-map>
 
@@ -59,8 +59,14 @@
 
       <location-list
         v-bind:locations="limitedLocations"
-        v-on:selected="onLocationSelected">
+        v-on:selected="onLocationSelected"
+        v-if="limitedLocations.length >= 1">
       </location-list>
+
+      <section role="status" class="message" v-if="limitedLocations.length < 1">
+        <h1>Oops! We couldn’t find any matching locations.</h1>
+        <p>You may want to <a href="/search/">try a new search</a></p>
+      </section>
 
       <div class="pagination" v-if="nextPageURL">
         <p><a v-bind:href="nextPageURL" v-on:click="onNextPage"><span>Next {{ itemsPerPage }} results</span> <img src="/assets/images/icons/forward.svg" alt="" /></a></p>
@@ -204,7 +210,7 @@ export default {
         window.scrollTo(0, 0)
       }
     },
-    onsearchArea: function (coordinates) {
+    onSearchArea: function (coordinates) {
       this.pageNumber = 1
 
       this.searchArea = {

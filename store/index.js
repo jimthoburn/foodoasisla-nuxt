@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import sortByClosest from '~/util/sortByClosest.js'
 import getLocationsWithCategories from '~/util/getLocationsWithCategories.js'
 
+import miscLocations from '~/data/locations.min.js'
 import communityGardens from '~/data/community-garden.min.js'
 import farmersMarkets from '~/data/farmers-market.min.js'
 import foodPantries from '~/data/food-pantry.min.js'
@@ -11,6 +12,7 @@ import supermarkets from '~/data/supermarket.min.js'
 
 // TBD: Consider adding this data in the data files ahead of time
 let locations = getLocationsWithCategories([
+  ...miscLocations,
   ...communityGardens,
   ...farmersMarkets,
   ...foodPantries,
