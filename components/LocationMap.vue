@@ -12,8 +12,6 @@
 <script>
 import mapOptions from '~/util/mapOptions.js'
 
-let oasisMap = null
-
 export default {
   props: {
     youAreHere: Object,
@@ -27,10 +25,9 @@ export default {
       required: true
     }
   },
-  mounted: function () {
-    /* SHIM: Wait a moment before rendering the map, so the size will be correct */
-    setTimeout(function () {
-      this.mapBoxSupported = 'mapboxgl' in window && window.mapboxgl.supported()
+  mounted () {
+    if (process.browser) {
+      this.mapBoxSupported = window.mapboxgl && window.mapboxgl.supported()
 
       this.createMap()
 
@@ -38,19 +35,20 @@ export default {
         this.addMarkers(this.locations, this.youAreHere)
         if (this.selectedLocation) {
           this.updateCurrentMarker(this.selectedLocation)
+
           let coordinates = {
             lng: this.selectedLocation.longitude,
             lat: this.selectedLocation.latitude
           }
 
-          if (oasisMap) oasisMap.setCenter(coordinates)
+          if (this.oasisMap) this.oasisMap.setCenter(coordinates)
         }
       }
-    }.bind(this), 1)
+    }
   },
-  data: function () {
+  data () {
     return {
-      map: null,
+      oasisMap: null,
       dragging: false, // SHIM: Avoid activing a marker while moving the map
       skipNextMoveMap: false, // SHIM: Avoid moving the map when clicking on markers
       markers: [],
@@ -62,20 +60,20 @@ export default {
   watch: {
 
     // Update the markers if the locations data changes
-    locations: function () {
+    locations () {
       this.hideSearchThisArea()
       this.resetCurrentMarker()
       this.updateMarkers()
     },
 
     // Deselect the current marker on the map if the detail page has become inactive
-    selectedLocation: function () {
+    selectedLocation () {
       // console.log('selectedLocation changed')
       if (!this.selectedLocation) {
         this.resetCurrentMarker()
       } else {
         this.updateCurrentMarker(this.selectedLocation)
-        if (!this.skipNextMoveMap) oasisMap.flyTo({ center: [this.selectedLocation.longitude, this.selectedLocation.latitude] })
+        if (!this.skipNextMoveMap && this.oasisMap) this.oasisMap.flyTo({ center: [this.selectedLocation.longitude, this.selectedLocation.latitude] })
         this.skipNextMoveMap = false
       }
     }
@@ -92,49 +90,49 @@ export default {
       this.hideSearchThisArea()
       this.resetCurrentMarker()
 
-      let center = oasisMap.getCenter().toArray()
+      let center = this.oasisMap.getCenter().toArray()
       this.$emit('search-this-area', { latitude: center[1], longitude: center[0] })
     },
     createMap () {
       if (process.browser && this.mapBoxSupported && this.$el.querySelector('#map')) {
         window.mapboxgl.accessToken = this.token
 
-        oasisMap = new window.mapboxgl.Map({
+        this.oasisMap = new window.mapboxgl.Map({
           container: this.$el.querySelector('#map'),
           style: mapOptions.MAP_STYLE,
           maxBounds: mapOptions.MAP_BOUNDS
         })
 
-        oasisMap.on('load', function () {
+        this.oasisMap.on('load', function () {
           // Add a zoom control
-          oasisMap.addControl(new window.mapboxgl.NavigationControl({ position: 'top-right' })) // position is optional
+          this.oasisMap.addControl(new window.mapboxgl.NavigationControl({ position: 'top-right' })) // position is optional
 
           // Draw food desert census tracts
           if (this.$route.query['deserts'] === '1') {
-            oasisMap.addSource('Food Deserts', mapOptions.FOOD_DESERTS_SOURCE)
-            oasisMap.addLayer(mapOptions.FOOD_DESERTS_LAYER)
+            this.oasisMap.addSource('Food Deserts', mapOptions.FOOD_DESERTS_SOURCE)
+            this.oasisMap.addLayer(mapOptions.FOOD_DESERTS_LAYER)
           }
-          // oasisMap.resize()
+          // this.oasisMap.resize()
         }.bind(this))
 
-        oasisMap.on('dragstart', function () {
+        this.oasisMap.on('dragstart', function () {
           this.dragging = true
         }.bind(this))
-        oasisMap.on('dragend', function () {
+        this.oasisMap.on('dragend', function () {
           setTimeout(function () {
             this.dragging = false
           }.bind(this), 10)
         }.bind(this))
 
-        oasisMap.on('dragend', this.showSearchThisArea.bind(this))
+        this.oasisMap.on('dragend', this.showSearchThisArea.bind(this))
       }
     },
-    updateMarkers: function () {
+    updateMarkers () {
       this.removeAllMarkers()
 
       this.addMarkers(this.locations)
     },
-    addYouAreHere: function (coordinates) {
+    addYouAreHere (coordinates) {
       let template = '<div class="you-are-here"><span>You are here</span></div>'
 
       let marker = document.createElement('div')
@@ -142,9 +140,9 @@ export default {
 
       return new window.mapboxgl.Marker(marker)
         .setLngLat(coordinates)
-        .addTo(oasisMap)
+        .addTo(this.oasisMap)
     },
-    createMarker: function (options, data) {
+    createMarker (options, data) {
       let marker = document.createElement('div')
       marker.className = 'marker ' + options.className
       let span = document.createElement('span')
@@ -153,17 +151,17 @@ export default {
       marker.appendChild(span)
       return marker
     },
-    updateMarkerLabels: function () {
-      if (oasisMap.getZoom() > 14) { // Zoomed In
+    updateMarkerLabels () {
+      if (this.oasisMap.getZoom() > 14) { // Zoomed In
         document.body.classList.remove('hidden-marker-labels')
       } else { // Zoomed Out
         document.body.classList.add('hidden-marker-labels')
       }
     },
-    resetCurrentMarker: function () {
+    resetCurrentMarker () {
       if (this.currentMarker) this.currentMarker.classList.remove('active')
     },
-    updateCurrentMarker: function (location) {
+    updateCurrentMarker (location) {
       // console.log('updateCurrentMarker: ' + location.name)
 
       if (this.currentMarker) this.currentMarker.classList.remove('active')
@@ -171,7 +169,7 @@ export default {
       this.currentMarker = this.getMarkerFromLocation(location)
       if (this.currentMarker) this.currentMarker.classList.add('active')
     },
-    getMarkerFromLocation: function (location) {
+    getMarkerFromLocation (location) {
       // Assume that the markers array is in the same order as the locations array
       for (let index = 0; index < this.markers.length; index++) {
         if (this.locations[index].name === location.name &&
@@ -181,7 +179,7 @@ export default {
         }
       }
     },
-    addMarker: function (location) {
+    addMarker (location) {
       let coordinates = [
         location.longitude,
         location.latitude
@@ -206,7 +204,7 @@ export default {
 
       new window.mapboxgl.Marker(marker)
         .setLngLat(coordinates)
-        .addTo(oasisMap)
+        .addTo(this.oasisMap)
 
       let handleMapClick = function (e) {
         if (this.dragging) return
@@ -222,13 +220,13 @@ export default {
 
       return coordinates
     },
-    removeAllMarkers: function () {
+    removeAllMarkers () {
       while (this.markers.length > 0) {
         this.markers.pop().remove()
       }
     },
-    addMarkers: function (locations) {
-      if (!oasisMap) return
+    addMarkers (locations) {
+      if (!this.oasisMap) return
 
       document.body.classList.add('hidden-marker-labels')
 
@@ -256,16 +254,16 @@ export default {
 
       // Show the marker labels
       setTimeout(updateMarkerLabels, 1000)
-      if (this.initializingMarkers) oasisMap.on('zoomend', updateMarkerLabels)
+      if (this.initializingMarkers) this.oasisMap.on('zoomend', updateMarkerLabels)
 
       this.initializingMarkers = false
 
       // console.dir(this.markers);
     },
-    fitMarkers: function (bounds) {
-      if (!oasisMap) return
+    fitMarkers (bounds) {
+      if (!this.oasisMap) return
 
-      oasisMap.setZoom(15)
+      this.oasisMap.setZoom(15)
 
       let mapLngLatBounds = new window.mapboxgl.LngLatBounds()
 
@@ -274,7 +272,7 @@ export default {
         mapLngLatBounds.extend(bounds[index])
       }
 
-      oasisMap.fitBounds(mapLngLatBounds, { padding: 10, easing: function () { return 1 } })
+      this.oasisMap.fitBounds(mapLngLatBounds, { padding: 10, easing: function () { return 1 } })
     }
   }
 }
