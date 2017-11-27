@@ -15,10 +15,11 @@
 //   }
 // };
 
+const itemsPerPage = 19
+
 module.exports = {
 
-  // The locations page has a list of locations equal to the itemsPerPage
-  'The locations page has a list of locations equal to the “itemsPerPage”': function (browser) {
+  'The locations page has a list of locations with a length equal to the “itemsPerPage”': function (browser) {
     // automatically uses dev Server port from /config.index.js
     // default: http://localhost:8080
     // see nightwatch.conf.js
@@ -26,22 +27,13 @@ module.exports = {
 
     browser
       .url('http://localhost:3000/locations/')
-      .waitForElementVisible('.location-list', 5000)
-      .assert.elementPresent('li')
-      .assert.elementCount('img', 1)
+      .waitForElementVisible('ul.location-list', 5000)
+      .elements('css selector', 'ul.location-list li', function(res) {
+        browser.assert.strictEqual(res.value.length, itemsPerPage)
+      })
       .end()
   }
 }
-
-// The locations page has a list of locations equal to the itemsPerPage
-
-// test('Route /locations/ contains a list of locations with a length equal to the itemsPerPage in the store', async t => {
-//   const window = await nuxt.renderAndGetWindow('http://localhost:4000/locations/')
-//   const locationList = window.document.querySelector('.location-list')
-//   const locationListItems = window.document.querySelectorAll('.location-list li')
-//   const itemsPerPage = locationList.__vue__.$store.state.itemsPerPage
-//   t.true(locationListItems.length === itemsPerPage) // TBD: JSDOM seems to produce four extra empty nodes at the start of the list
-// })
 
 
 // The locations page has a list of locations equal to the itemsPerPage
