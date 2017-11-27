@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "nuxt",
     "build": "nuxt build",
-    "test": "nightwatch ./test/test.js --verbose --config ./test/nightwatch.config.js",
+    "test": "nightwatch ./test/test.js --config ./test/nightwatch.config.js",
     "start": "nuxt start",
     "generate": "nuxt generate",
     "precommit": "npm run lint",
