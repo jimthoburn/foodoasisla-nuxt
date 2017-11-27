@@ -12,11 +12,18 @@ module.exports = {
   },
 
   'The locations page has a list of locations': function (browser) {
-    browser.waitForElementVisible('ul.location-list', 5000)
+    browser.waitForElementPresent('ul.location-list', 5000)
   },
 
   'The list of locations has a length equal to the “itemsPerPage”': function (browser) {
     browser.elements('css selector', 'ul.location-list li', function(res) {
+      browser.assert.strictEqual(res.value.length, itemsPerPage)
+    })
+  },
+
+  'The number of map markers is the same as the number of locations in the list': function (browser) {
+    browser.waitForElementPresent('#map', 5000)
+    browser.elements('css selector', '#map .marker', function(res) {
       browser.assert.strictEqual(res.value.length, itemsPerPage)
     })
   },
@@ -53,8 +60,59 @@ module.exports = {
     })
   },
 
+  'If a list item is pressed, the details for that location will be visible': function (browser) {
+    browser.url('http://localhost:3000/locations/?type=farmers-market')
+      .waitForElementPresent('ul.location-list', 5000)
+    browser.getText("ul.location-list a h2", function(result) {
+      let name = result.value
+      browser.click('ul.location-list a', function(response) {
+        browser.expect.element('.location-summary h2').text.to.equal(name)
+      })
+    })
+  },
+
+  'If a location has been selected, the navigation will switch to “More locations“': function (browser) {
+    browser.url('http://localhost:3000/locations/?type=farmers-market')
+      .waitForElementPresent('ul.location-list', 5000)
+    browser.click('ul.location-list a', function(response) {
+      browser.expect.element('nav .search').to.not.be.visible
+      browser.expect.element('nav .back').to.be.visible
+    })
+  },
+
+  'After the back button is pressed, the navigation will show the search button again': function (browser) {
+    browser.click('.back a', function(response) {
+      browser.expect.element('nav .search').to.be.visible
+      browser.expect.element('nav .back').to.not.be.visible
+    })
+  },
+
+  'If a list item is pressed, and the corresponding marker in the map will be activated': function (browser) {
+    browser.url('http://localhost:3000/locations/?type=farmers-market')
+      .waitForElementPresent('ul.location-list', 5000)
+      .waitForElementPresent('#map', 5000)
+    browser.getText("ul.location-list a h2", function(result) {
+      let name = result.value
+      browser.click('ul.location-list a', function(response) {
+        browser.expect.element('#map .active .marker-label').text.to.equal(name)
+      })
+    })
+  },
+
+  'If a marker is pressed, the details for a location will be activated': function (browser) {
+    browser.url('http://localhost:3000/locations/?type=farmers-market')
+      .waitForElementPresent('ul.location-list', 5000)
+      .waitForElementPresent('#map .marker', 5000)
+    browser.click('#map .marker', function(response) {
+      browser.getText("#map .marker .marker-label", function(result) {
+        let name = result.value
+        browser.expect.element('.location-summary h2').text.to.equal(name)
+      })
+    })
+  },
+
   'If a type parameter is present with a value of “farmers-market”, all of the locations on the page will have type of “Farmers Market”': function (browser) {
-    browser.url('http://localhost:3000/locations/?type=farmers-market').waitForElementVisible('ul.location-list', 5000)
+    browser.url('http://localhost:3000/locations/?type=farmers-market').waitForElementPresent('ul.location-list', 5000)
     browser.elements('css selector', 'ul.location-list .type', function(res) {
       res.value.forEach((location, index) => {
         browser.elementIdText(location.ELEMENT, textResult => {
@@ -65,14 +123,14 @@ module.exports = {
   },
 
   'If an open now parameter is present with a value of 1, all of the locations on the page will be open now': function (browser) {
-    browser.url('http://localhost:3000/locations/?open=1').waitForElementVisible('ul.location-list', 5000)
+    browser.url('http://localhost:3000/locations/?open=1').waitForElementPresent('ul.location-list', 5000)
     browser.elements('css selector', 'ul.location-list .open', function(res) {
       browser.assert.strictEqual(res.value.length, itemsPerPage)
     })
   },
 
   'If no locations matched the search critera, a special message will show': function (browser) {
-    browser.url('http://localhost:3000/locations/?open=1&type=community-garden').waitForElementVisible('main', 5000)
+    browser.url('http://localhost:3000/locations/?open=1&type=community-garden').waitForElementPresent('main', 5000)
     browser.expect.element('ul.location-list').to.not.be.present
     browser.expect.element('.message').to.be.present
     browser.expect.element('.message h1').text.to.contain('We couldn’t find any matching locations.')
@@ -81,11 +139,7 @@ module.exports = {
   // If the current time is nine o’clock in the morning on Thursday, the “L.A. City Hall (Little Tokyo CFM)” location will indicate that it not open
   // If the current time is ten o’clock in the morning on Thursday, the “L.A. City Hall (Little Tokyo CFM)” location will indicate that it is open
   // If Mapbox is supported, a map will be rendered on the page
-  // If a map exists on the page, there will be a marker for each location in the list
-  // If a list item is pressed, the details for a location will be activated
-  // If a list item is pressed, and the map is active the corresponding marker will be activated
-  // If a marker is pressed, the details for a location will be activated
-  // If a location has been selected, the navigation will switch to “More locations“
+  // 
   // TODO: Add test descriptions for the details page
 
 
