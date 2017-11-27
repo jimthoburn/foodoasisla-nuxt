@@ -1,5 +1,6 @@
 // For authoring Nightwatch tests, see
 // http://nightwatchjs.org/guide#usage
+// http://nightwatchjs.org/api
 
 // TODO: Load these from the store and configuration
 const itemsPerPage = 20
@@ -31,28 +32,52 @@ module.exports = {
 
   'The first location has a distance indicator that contains a number': function (browser) {
     browser.expect.element('ul.location-list .distance').to.be.present
-    browser.expect.element('ul.location-list .distance').text.to.match(/[0-9\.]+.*/)
+    browser.expect.element('ul.location-list .distance').text.to.match(/[0-9]+.*/) // a number followed by anything
   },
 
-  // 'The locations are sorted by distance from the search area': function (browser) {
-  //   browser.elements('css selector', 'ul.location-list .distance', function(res) {
-      
-  //   })
-  // }
+  'The locations are sorted by distance from the search area': function (browser) {
+    browser.elements('css selector', 'ul.location-list .distance span', function(res) {
+      let lastDistance = 0
+      res.value.forEach((location, index) => {
+        browser.elementIdText(location.ELEMENT, textResult => {
+          let nextDistance = Number(textResult.value)
 
-  'Close browser session': function (browser) {
-    browser.end()
-  }
+          // console.log('nextDistance: ' + nextDistance)
+          // console.log('lastDistance: ' + lastDistance)
 
-  // 'If a type parameter is present with a value of “farmers-market”, all of the locations on the page will be farmers markets': function (browser) {
-  //   browser
-  //     .url('http://localhost:3000/locations/')
-  //     .waitForElementVisible('ul.location-list', 5000)
-  //     .end()
-  // }
+          browser.assert.ok(nextDistance >= lastDistance)
 
-  // If an open now parameter is present with a value of 1, all of the locations on the page will be open now
-  // If no locations matched the search critera, a special message will show
+          lastDistance = nextDistance
+        })
+      })
+    })
+  },
+
+  'If a type parameter is present with a value of “farmers-market”, all of the locations on the page will have type of “Farmers Market”': function (browser) {
+    browser.url('http://localhost:3000/locations/?type=farmers-market').waitForElementVisible('ul.location-list', 5000)
+    browser.elements('css selector', 'ul.location-list .type', function(res) {
+      res.value.forEach((location, index) => {
+        browser.elementIdText(location.ELEMENT, textResult => {
+          browser.assert.strictEqual(textResult.value, 'Farmers Market')
+        })
+      })
+    })
+  },
+
+  'If an open now parameter is present with a value of 1, all of the locations on the page will be open now': function (browser) {
+    browser.url('http://localhost:3000/locations/?open=1').waitForElementVisible('ul.location-list', 5000)
+    browser.elements('css selector', 'ul.location-list .open', function(res) {
+      browser.assert.strictEqual(res.value.length, itemsPerPage)
+    })
+  },
+
+  'If no locations matched the search critera, a special message will show': function (browser) {
+    browser.url('http://localhost:3000/locations/?open=1&type=community-garden').waitForElementVisible('main', 5000)
+    browser.expect.element('ul.location-list').to.not.be.present
+    browser.expect.element('.message').to.be.present
+    browser.expect.element('.message h1').text.to.contain('We couldn’t find any matching locations.')
+  },
+
   // If the current time is nine o’clock in the morning on Thursday, the “L.A. City Hall (Little Tokyo CFM)” location will indicate that it not open
   // If the current time is ten o’clock in the morning on Thursday, the “L.A. City Hall (Little Tokyo CFM)” location will indicate that it is open
   // If Mapbox is supported, a map will be rendered on the page
@@ -63,5 +88,9 @@ module.exports = {
   // If a location has been selected, the navigation will switch to “More locations“
   // TODO: Add test descriptions for the details page
 
+
+  'Close browser session': function (browser) {
+    browser.end()
+  }
 
 }
