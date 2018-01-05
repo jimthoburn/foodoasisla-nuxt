@@ -1,6 +1,7 @@
 <template>
   <div class="location-summary-container">
     <div v-bind:class="[location.categoryCode, location.parentCategoryCode]">
+
       <div class="location-summary">
         <img v-bind:src="'/assets/images/home/' + location.categoryCode + '.svg'" width="100" alt="" />
         <h2>{{ location.name }}</h2>
@@ -13,7 +14,7 @@
       <ul class="options action">
         <li><a href="#shareable-link" v-on:click.prevent="shareableLinkActive = true"><span><img src="/assets/images/icons/share.svg" height="24" class="icon" alt="" /></span> <span>Share</span></a></li>
         <li><a href="#directions" v-on:click.prevent="directionsActive = true"><span><img src="/assets/images/icons/directions.svg" height="24" class="icon" alt="" /></span> <span>Directions</span></a></li>
-      </ul><!-- /.options -->
+      </ul>
 
       <div class="shareable-link" id="shareable-link" v-show="shareableLinkActive">
         <h2>Share</h2>
@@ -23,7 +24,7 @@
             <input type="text" v-bind:value="shareableLink" onclick="this.setSelectionRange(0, this.value.length)" readonly="readonly" />
           </label>
         </p>
-      </div><!-- /.shareable-link -->
+      </div>
 
       <div class="directions" id="directions" v-show="directionsActive">
         <h2>Directions</h2>
@@ -82,6 +83,7 @@
           <li><a v-bind:href="reportIssueURL">Report Issue</a></li>
         </ul>
       </section>
+
     </div>
   </div>
 </template>
@@ -91,6 +93,7 @@ import isOpenOnDayTime from '~/util/isOpenOnDayTime.js'
 import getDistanceForPresentation from '~/util/getDistanceForPresentation.js'
 
 let isOpenNowTimer
+
 function updateIsOpenNow () {
   this.isOpenNow = false
   this.location.hours.forEach(function (hours) {

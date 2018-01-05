@@ -131,9 +131,9 @@ module.exports = {
 
   'If no locations matched the search critera, a special message will show': function (browser) {
     browser.url('http://localhost:3000/locations/?open=1&type=community-garden').waitForElementPresent('main', 5000)
-    browser.expect.element('ul.location-list').to.not.be.present
-    browser.expect.element('.message').to.be.present
-    browser.expect.element('.message h1').text.to.contain('We couldn’t find any matching locations.')
+    browser.expect.element('main ul.location-list').to.not.be.present
+    browser.expect.element('main .message').to.be.present
+    browser.expect.element('main .message h1').text.to.contain('We couldn’t find any matching locations.')
   },
 
   // If the current time is nine o’clock in the morning on Thursday, the “L.A. City Hall (Little Tokyo CFM)” location will indicate that it not open

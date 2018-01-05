@@ -17,6 +17,7 @@ import getQueryString from '~/util/getQueryString.js'
 import getDistanceForPresentation from '~/util/getDistanceForPresentation.js'
 
 let isOpenNowTimer
+
 function updateIsOpenNow () {
   this.isOpenNow = false
   this.location.hours.forEach(function (hours) {
