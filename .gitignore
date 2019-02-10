@@ -13,4 +13,4 @@ dist
 # Test reports
 test/reports
 
-package-lock.json
+# package-lock.json
