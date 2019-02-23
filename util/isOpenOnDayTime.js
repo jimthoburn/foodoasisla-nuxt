@@ -22,7 +22,9 @@ function isOpenOnDayTime ({day, open, close, targetTime}) {
     // SHIM: The date here is arbitrary
     const now = targetTime ? new Date(`October 24, 2017 ${targetTime}`) : new Date()
 
-    const pacificTime = (now.toString().indexOf('(PDT)') >= 0) || (now.toString().indexOf('(PST)') >= 0)
+    const pacificTime = (now.toString().indexOf('PDT') >= 0) ||
+                        (now.toString().indexOf('PST') >= 0) ||
+                        (now.toString().indexOf('Pacific') >= 0)
     const nowSeconds = (now.getHours() * 60 * 60) + (now.getMinutes() * 60) + now.getSeconds()
 
     // targetTime not yet checking for days of the week
