@@ -1,17 +1,17 @@
 module.exports = {
   "src_folders" : ["test"],
-  "output_folder" : "test/reports",
+  "output_folder" : "reports",
   "custom_commands_path" : "",
   "custom_assertions_path" : "",
   "page_objects_path" : "",
-  "globals_path" : "test/nightwatch.globals.js",
+  "globals_path" : "nightwatch.globals.js",
 
   "selenium" : {
     "start_process" : false,
     "server_path" : require('selenium-server').path,
     "log_path" : "",
     "host": "127.0.0.1",
-    "port" : 4444,
+    "port" : 9515,
     "cli_args" : {
       "webdriver.chrome.driver" : require('chromedriver').path
     }
