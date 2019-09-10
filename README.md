@@ -1,10 +1,8 @@
 # Food Oasis LA
 
-This is an experimental version of the Food Oasis LA search feature, to see if server-side rendering could be an improvement 
+This is an experimental version of the Food Oasis LA search feature, to see if server-side rendering could be an improvement.  The project is built with [Nuxt](https://nuxtjs.org/) and [Vue](Vue.js).
 
-[search.foodoasis.la](https://search.foodoasis.la)
-
-The project is built with [Nuxt.js](https://nuxtjs.org/) and [Vue.js](Vue.js).
+You can visit the project at: [search.foodoasis.la](https://search.foodoasis.la)
 
 ## Build Setup
 
