@@ -15,7 +15,7 @@ module.exports = {
     ],
     link: [
       { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Reem+Kufi|Open+Sans:400,400i,600' },
-      { rel: 'stylesheet', href: 'https://api.tiles.mapbox.com/mapbox-gl-js/v0.48.0/mapbox-gl.css' },
+      { rel: 'stylesheet', href: 'https://api.tiles.mapbox.com/mapbox-gl-js/v1.3.1/mapbox-gl.css' },
       { rel: 'stylesheet', href: '/assets/css/elements.css' },
       { rel: 'stylesheet', href: '/assets/css/buttons.css' },
       { rel: 'stylesheet', href: '/assets/css/form.css' },
@@ -36,7 +36,7 @@ module.exports = {
       { rel: 'apple-touch-icon', href: '/assets/images/favicon-rgb-240-240-240.png' }
     ],
     script: [
-      { src: 'https://api.tiles.mapbox.com/mapbox-gl-js/v0.48.0/mapbox-gl.js' }
+      { src: 'https://api.tiles.mapbox.com/mapbox-gl-js/v1.3.1/mapbox-gl.js' }
 
       // Jim’s Google Maps API key
       // { src: 'https://maps.googleapis.com/maps/api/js?key=AIzaSyBP5KxqO9v1sLhXlkrG3vDiDdOJvYLJ0H4' }
