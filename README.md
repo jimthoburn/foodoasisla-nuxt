@@ -2,7 +2,7 @@
 
 This is an experimental version of the [Food Oasis LA](https://github.com/foodoasisla/site) search feature, to see if server-side rendering could be an improvement.  The project is built with [Nuxt](https://nuxtjs.org/) and [Vue](Vue.js).
 
-You can visit the project at: [search.foodoasis.la](https://search.foodoasis.la)
+You can try the search feature at: [search.foodoasis.la](https://search.foodoasis.la)
 
 ## Build Setup
 
