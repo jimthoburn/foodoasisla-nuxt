@@ -87,7 +87,7 @@ module.exports = {
     })
   },
 
-  'If a list item is pressed, and the corresponding marker in the map will be activated': function (browser) {
+  'If a list item is pressed, then the corresponding marker in the map will be activated': function (browser) {
     browser.url('http://localhost:3000/locations/?type=farmers-market')
       .waitForElementPresent('ul.location-list', 5000)
       .waitForElementPresent('#map', 5000)
