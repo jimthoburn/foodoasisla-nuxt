@@ -13,6 +13,9 @@ $ npm install # Or yarn install
 # serve with hot reload at localhost:3000
 $ npm run dev
 
+# run end-to-end tests
+$ npm run test
+
 # build for production and launch server
 $ npm run build
 $ npm start
