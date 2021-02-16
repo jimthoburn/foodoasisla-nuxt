@@ -18,7 +18,7 @@ module.exports = {
     ],
     link: [
       { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Reem+Kufi|Open+Sans:400,400i,600' },
-      { rel: 'stylesheet', href: 'https://api.tiles.mapbox.com/mapbox-gl-js/v1.6.1/mapbox-gl.css' },
+      { rel: 'stylesheet', href: 'https://api.tiles.mapbox.com/mapbox-gl-js/v1.13.0/mapbox-gl.css' },
       { rel: 'stylesheet', href: '/assets/css/elements.css' },
       { rel: 'stylesheet', href: '/assets/css/buttons.css' },
       { rel: 'stylesheet', href: '/assets/css/form.css' },
